@@ -16,6 +16,10 @@ target_compile_definitions(${APP_NAME} PRIVATE APP_BUILD_TYPE="$<CONFIG>")
 
 target_compile_definitions(${APP_NAME} PRIVATE APP_IS_NICE=$<BOOL:$CACHE{APP_SHOULD_BE_NICE}>)
 
+target_link_libraries(${APP_NAME} PRIVATE screen)
+target_link_libraries(${APP_NAME} PRIVATE component)
+target_link_libraries(${APP_NAME} PUBLIC Views)
+
 target_compile_options(${APP_NAME} PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>:-Wall -O3 -Wno-unused-parameter>
         PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,GNU>:-Wall -O3 -Wno-unused-parameter>
         PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,MSVC>: /O2>
