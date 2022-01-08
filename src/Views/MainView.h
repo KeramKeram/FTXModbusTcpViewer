@@ -15,6 +15,9 @@
 namespace views {
     using namespace ftxui;
 
+    constexpr int VIEW_COLUMNS = 10;
+    constexpr int VIEW_ROWS = 10;
+
     class MainView : public IView {
     public:
         ~MainView() override = default;
@@ -22,7 +25,7 @@ namespace views {
         void show() override;
 
     private:
-        Element make_box(int x, int y);
-        Element make_grid();
+        Element makeBox(int x, int y, std::string &value);
+        Element makeGrid();
     };
 }// namespace views

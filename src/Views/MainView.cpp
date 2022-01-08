@@ -42,7 +42,7 @@ namespace views {
                                    slider_x->Render(),
                                    slider_y->Render(),
                                    separator(),
-                                   make_grid() | focusPositionRelative(focus_x, focus_y) |
+                                   makeGrid() | focusPositionRelative(focus_x, focus_y) |
                                            frame | flex,
                            }) |
                            border;
@@ -52,19 +52,20 @@ namespace views {
         screen.Loop(renderer);
     }
 
-    Element MainView::make_box(int x, int y) {
-        std::string title = "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
-        return text(title) | center | size(WIDTH, EQUAL, 6) |
+    Element MainView::makeBox(int x, int y, std::string &value) {
+        return text(value) | center | size(WIDTH, EQUAL, 6) |
                size(HEIGHT, EQUAL, 3) | border |
                bgcolor(Color::HSV(x * 255 / 15, 255, y * 255 / 15));
     };
 
-    Element MainView::make_grid() {
+    Element MainView::makeGrid() {
         std::vector<Elements> rows;
-        for (int i = 0; i < 15; i++) {
+        std::string val;
+        for (int i = 0; i < VIEW_COLUMNS; i++) {
             std::vector<Element> cols;
-            for (int j = 0; j < 15; j++) {
-                cols.push_back(make_box(i, j));
+            for (int j = 0; j < VIEW_ROWS; j++) {
+                val = std::to_string(i);
+                cols.push_back(makeBox(i, j, val));
             }
             rows.push_back(cols);
         }
