@@ -53,8 +53,8 @@ namespace views {
     }
 
     Element MainView::makeBox(int x, int y, std::string &value) {
-        return text(value) | center | size(WIDTH, EQUAL, 6) |
-               size(HEIGHT, EQUAL, 3) | border |
+        return text(value) | center | size(WIDTH, EQUAL, VIEW_BOX_WIDHT) |
+               size(HEIGHT, EQUAL, VIEW_BOX_HEIGHT) | border |
                bgcolor(Color::HSV(x * 255 / 15, 255, y * 255 / 15));
     };
 

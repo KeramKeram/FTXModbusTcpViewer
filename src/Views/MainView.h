@@ -17,6 +17,8 @@ namespace views {
 
     constexpr int VIEW_COLUMNS = 10;
     constexpr int VIEW_ROWS = 10;
+    constexpr int VIEW_BOX_WIDHT = 6;
+    constexpr int VIEW_BOX_HEIGHT = 3;
 
     class MainView : public IView {
     public:
