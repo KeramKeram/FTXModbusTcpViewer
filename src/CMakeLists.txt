@@ -1,7 +1,7 @@
 add_subdirectory(App)
 add_subdirectory(Model)
 add_subdirectory(Views)
-add_subdirectory(Controllers)
 add_subdirectory(Containers)
+add_subdirectory(Controllers)
 add_subdirectory(FTXUI)
 add_subdirectory(modbuspp)
