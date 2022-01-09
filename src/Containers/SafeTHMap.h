@@ -16,9 +16,13 @@ namespace containers {
         }
 
         void remove(T &key) {
+            std::lock_guard<std::mutex> lk(mMutex);
+            mContainer.erase(key);
         }
 
         V get(T &key) {
+            std::lock_guard<std::mutex> lk(mMutex);
+            return mContainer[key];
         }
 
     private:
