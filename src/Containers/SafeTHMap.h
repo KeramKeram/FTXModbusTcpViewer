@@ -25,6 +25,11 @@ namespace containers {
             return mContainer[key];
         }
 
+        void clear() {
+            std::lock_guard<std::mutex> lk(mMutex);
+            mContainer.clear();
+        }
+
     private:
         std::map<T, V> mContainer;
         std::mutex mMutex;
