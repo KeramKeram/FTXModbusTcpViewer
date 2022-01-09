@@ -14,8 +14,8 @@ endif ()
 
 target_include_directories(${LIB_NAME} INTERFACE .)
 
-target_link_libraries(${LIB_NAME} PRIVATE screen)
-target_link_libraries(${LIB_NAME} PRIVATE component)
+target_link_libraries(${LIB_NAME} PUBLIC screen)
+target_link_libraries(${LIB_NAME} PUBLIC component)
 
 target_compile_options(
         ${LIB_NAME} PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>:-Wall -O3 -Wno-unused-parameter>
