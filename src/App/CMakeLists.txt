@@ -20,6 +20,7 @@ target_link_libraries(${APP_NAME} PRIVATE screen)
 target_link_libraries(${APP_NAME} PRIVATE component)
 target_link_libraries(${APP_NAME} PRIVATE Views)
 target_link_libraries(${APP_NAME} PRIVATE Controllers)
+target_link_libraries(${APP_NAME} PRIVATE Model)
 
 target_compile_options(${APP_NAME} PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>:-Wall -O3 -Wno-unused-parameter>
         PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,GNU>:-Wall -O3 -Wno-unused-parameter>
