@@ -52,9 +52,9 @@ namespace views {
 
     Element MainView::makeBox(const BoxParameter &param) {
         const auto [x, y, value, hue, saturation, hvValue] = param;
-        return text(value) | center | size(WIDTH, EQUAL, VIEW_BOX_WIDHT) | size(HEIGHT, EQUAL, VIEW_BOX_HEIGHT) |
+        return text(value) | center | size(WIDTH, EQUAL, VIEW_BOX_WIDTH) | size(HEIGHT, EQUAL, VIEW_BOX_HEIGHT) |
                border | bgcolor(Color::HSV(hue, saturation, hvValue));
-    };
+    }
 
     Element MainView::makeGrid() {
         std::vector<Elements> rows;
@@ -72,11 +72,11 @@ namespace views {
 
         return gridbox(rows);
     }
-    void MainView::updateBoxParameters(MainView::BoxParameter &param, int i, int j) const {
+    void MainView::updateBoxParameters(MainView::BoxParameter &param, int i, int j) {
         param.mYPosition = j;
         param.mBoxValue = std::to_string(j);
         param.mHue = i * 255 / 15;
         param.mHSVValue = j * 255 / 15;
-    };
+    }
 
 }// namespace views
