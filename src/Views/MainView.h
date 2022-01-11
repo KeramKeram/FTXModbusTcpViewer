@@ -27,7 +27,22 @@ namespace views {
         void show() override;
 
     private:
-        Element makeBox(int x, int y, std::string &value);
+        struct BoxParameter {
+            BoxParameter(int mXPosition, int mYPosition, const std::string &mBoxValue, uint8_t mHue,
+                         uint8_t mSaturation, uint8_t mHsvValue)
+                : mXPosition(mXPosition), mYPosition(mYPosition), mBoxValue(mBoxValue), mHue(mHue),
+                  mSaturation(mSaturation), mHSVValue(mHsvValue){};
+            ~BoxParameter() = default;
+            int mXPosition;
+            int mYPosition;
+            std::string mBoxValue;
+            uint8_t mHue;
+            uint8_t mSaturation;
+            uint8_t mHSVValue;
+        };
+
+        Element makeBox(const BoxParameter &param);
         Element makeGrid();
+        void updateBoxParameters(BoxParameter &param, int i, int j) const;
     };
 }// namespace views
