@@ -1,6 +1,6 @@
 #include "MainView.h"
-#include <string>  // for string, operator+, basic_string, to_string, char_traits
-#include <vector>  // for vector, __alloc_traits<>::value_type
+#include <string>// for string, operator+, basic_string, to_string, char_traits
+#include <vector>// for vector, __alloc_traits<>::value_type
 
 #include "ftxui/component/component.hpp"         // for Menu, Renderer, Horizontal, Vertical
 #include "ftxui/component/screen_interactive.hpp"// for Component, ScreenInteractive
@@ -55,7 +55,15 @@ namespace views {
             std::vector<Element> cols;
             param.mXPosition = i;
             for (int j = 0; j < VIEW_ROWS; j++) {
-                updateBoxParameters(param, i, j);
+                if (j == 0 && i == 0) {
+                    updateBoxParameters(param, i, j, 40, 200);
+                } else if (j == 0) {
+                    updateBoxParameters(param, i, j, 85, 100);
+                } else if (i == 0 && j >= 1) {
+                    updateBoxParameters(param, i, j, 0, 0);
+                } else {
+                    updateBoxParameters(param, i, j, 185, 100);
+                }
                 cols.push_back(makeBox(param));
             }
             rows.push_back(cols);
@@ -63,11 +71,11 @@ namespace views {
 
         return gridbox(rows);
     }
-    void MainView::updateBoxParameters(MainView::BoxParameter &param, int i, int j) {
+    void MainView::updateBoxParameters(MainView::BoxParameter &param, int i, int j, int hue, int hsv) {
         param.mYPosition = j;
         param.mBoxValue = std::to_string(j);
-        param.mHue = i * 255 / 15;
-        param.mHSVValue = j * 255 / 15;
+        param.mHue = hue;
+        param.mHSVValue = hsv;
     }
 
 }// namespace views
