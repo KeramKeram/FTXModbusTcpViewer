@@ -17,7 +17,7 @@ namespace views {
 
         auto slider_x = Slider("x", &focus_x, 0.f, 1.f, 0.01f);
         auto slider_y = Slider("y", &focus_y, 0.f, 1.f, 0.01f);
-
+        mGrid = makeGrid();
         auto renderer = Renderer(Container::Vertical({
                                          slider_x,
                                          slider_y,
@@ -32,7 +32,7 @@ namespace views {
                                                     slider_x->Render(),
                                                     slider_y->Render(),
                                                     separator(),
-                                                    makeGrid() | focusPositionRelative(focus_x, focus_y) | frame | flex,
+                                                    mGrid | focusPositionRelative(focus_x, focus_y) | frame | flex,
                                             }) |
                                             border;
                                  });
