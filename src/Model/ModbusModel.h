@@ -11,17 +11,10 @@ namespace model {
     class ModbusModel {
     public:
         ModbusModel(std::function<void()> update);
+
         ~ModbusModel() = default;
 
         void setUpdateCallback(std::function<void()> modelsUpdatedCallback);
-
-        const std::shared_ptr<safeMap> &getMCoils() const;
-
-        const std::shared_ptr<safeMap> &getMInputStatus() const;
-
-        const std::shared_ptr<safeMap> &getMInputRegisters() const;
-
-        const std::shared_ptr<safeMap> &getMHoldingRegisters() const;
 
         void setCoilAddress(dataPair data);
 
@@ -40,10 +33,10 @@ namespace model {
         dataPair getHoldingRegisterAddress(unsigned int address);
 
     private:
-        std::shared_ptr<safeMap> mCoils;
-        std::shared_ptr<safeMap> mInputStatus;
-        std::shared_ptr<safeMap> mInputRegisters;
-        std::shared_ptr<safeMap> mHoldingRegisters;
+        std::unique_ptr<safeMap> mCoils;
+        std::unique_ptr<safeMap> mInputStatus;
+        std::unique_ptr<safeMap> mInputRegisters;
+        std::unique_ptr<safeMap> mHoldingRegisters;
 
         std::function<void()> mModelsUpdatedCallback;
     };
