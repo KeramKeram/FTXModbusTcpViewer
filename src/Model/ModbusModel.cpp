@@ -28,12 +28,12 @@ namespace model {
 
     void ModbusModel::setHoldingRegisterAddress(dataPair data) {}
 
-    dataPair ModbusModel::getCoilAddress(std::string &address) { return model::dataPair(); }
+    dataPair ModbusModel::getCoilAddress(unsigned int address) { return model::dataPair(); }
 
-    dataPair ModbusModel::getInputStatusAddress(std::string &address) { return model::dataPair(); }
+    dataPair ModbusModel::getInputStatusAddress(unsigned int address) { return model::dataPair(); }
 
-    dataPair ModbusModel::getInputRegisterAddress(std::string &address) { return model::dataPair(); }
+    dataPair ModbusModel::getInputRegisterAddress(unsigned int address) { return model::dataPair(); }
 
-    dataPair ModbusModel::getHoldingRegisterAddress(std::string &address) { return model::dataPair(); }
+    dataPair ModbusModel::getHoldingRegisterAddress(unsigned intaddress) { return model::dataPair(); }
 
 }// namespace model
