@@ -19,4 +19,21 @@ namespace model {
     const std::shared_ptr<safeMap> &ModbusModel::getMInputRegisters() const { return mInputRegisters; }
 
     const std::shared_ptr<safeMap> &ModbusModel::getMHoldingRegisters() const { return mHoldingRegisters; }
+
+    void ModbusModel::setCoilAddress(dataPair data) {}
+
+    void ModbusModel::setInputStatusAddress(dataPair data) {}
+
+    void ModbusModel::setInputRegisterAddress(dataPair data) {}
+
+    void ModbusModel::setHoldingRegisterAddress(dataPair data) {}
+
+    dataPair ModbusModel::getCoilAddress(std::string &address) { return model::dataPair(); }
+
+    dataPair ModbusModel::getInputStatusAddress(std::string &address) { return model::dataPair(); }
+
+    dataPair ModbusModel::getInputRegisterAddress(std::string &address) { return model::dataPair(); }
+
+    dataPair ModbusModel::getHoldingRegisterAddress(std::string &address) { return model::dataPair(); }
+
 }// namespace model
