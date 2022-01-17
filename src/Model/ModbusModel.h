@@ -5,8 +5,8 @@
 #include "SafeTHMap.h"
 
 namespace model {
-    using safeMap = containers::SafeTHMap<std::string, std::string>;
-    using dataPair = std::pair<std::string, std::string>;
+    using safeMap = containers::SafeTHMap<unsigned int, std::string>;
+    using dataPair = std::pair<unsigned int, std::string>;
 
     class ModbusModel {
     public:
@@ -31,13 +31,13 @@ namespace model {
 
         void setHoldingRegisterAddress(dataPair data);
 
-        dataPair getCoilAddress(std::string& address);
+        dataPair getCoilAddress(unsigned int address);
 
-        dataPair getInputStatusAddress(std::string& address);
+        dataPair getInputStatusAddress(unsigned int address);
 
-        dataPair getInputRegisterAddress(std::string& address);
+        dataPair getInputRegisterAddress(unsigned int address);
 
-        dataPair getHoldingRegisterAddress(std::string& address);
+        dataPair getHoldingRegisterAddress(unsigned int address);
 
     private:
         std::shared_ptr<safeMap> mCoils;
