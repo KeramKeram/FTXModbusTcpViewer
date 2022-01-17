@@ -6,14 +6,16 @@
 
 namespace model {
     using safeMap = containers::SafeTHMap<std::string, std::string>;
-    struct ModbusModel {
+    class ModbusModel {
+    public:
         ModbusModel(std::function<void()> update);
         ~ModbusModel() = default;
 
-        std::unique_ptr<safeMap> mCoils;
-        std::unique_ptr<safeMap> mInputStatus;
-        std::unique_ptr<safeMap> mInputRegisters;
-        std::unique_ptr<safeMap> mHoldingRegisters;
+    private:
+        std::shared_ptr<safeMap> mCoils;
+        std::shared_ptr<safeMap> mInputStatus;
+        std::shared_ptr<safeMap> mInputRegisters;
+        std::shared_ptr<safeMap> mHoldingRegisters;
 
         std::function<void()> mModelsUpdatedCallback;
     };

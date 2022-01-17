@@ -3,9 +3,9 @@
 namespace model {
 
     ModbusModel::ModbusModel(std::function<void()> update) : mModelsUpdatedCallback(update) {
-        mCoils = std::make_unique<safeMap>();
-        mInputStatus = std::make_unique<safeMap>();
-        mInputRegisters = std::make_unique<safeMap>();
-        mHoldingRegisters = std::make_unique<safeMap>();
+        mCoils = std::shared_ptr<safeMap>();
+        mInputStatus = std::shared_ptr<safeMap>();
+        mInputRegisters = std::shared_ptr<safeMap>();
+        mHoldingRegisters = std::shared_ptr<safeMap>();
     }
 }// namespace model
