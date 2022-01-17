@@ -21,3 +21,5 @@ target_compile_options(
         PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,GNU>:-Wall -O3 -Wno-unused-parameter>
         PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,MSVC>: /O2>
 )
+
+add_subdirectory(test)
