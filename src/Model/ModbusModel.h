@@ -11,6 +11,16 @@ namespace model {
         ModbusModel(std::function<void()> update);
         ~ModbusModel() = default;
 
+        void setUpdateCallback(std::function<void()> modelsUpdatedCallback);
+
+        const std::shared_ptr<safeMap> &getMCoils() const;
+
+        const std::shared_ptr<safeMap> &getMInputStatus() const;
+
+        const std::shared_ptr<safeMap> &getMInputRegisters() const;
+
+        const std::shared_ptr<safeMap> &getMHoldingRegisters() const;
+
     private:
         std::shared_ptr<safeMap> mCoils;
         std::shared_ptr<safeMap> mInputStatus;
