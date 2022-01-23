@@ -10,7 +10,7 @@ namespace model {
     }
 
     void ModbusModel::setUpdateCallback(std::function<void()> modelsUpdatedCallback) {
-        mModelsUpdatedCallback = modelsUpdatedCallback;
+        mModelsUpdatedCallback = std::move(modelsUpdatedCallback);
     }
 
     void ModbusModel::setCoilAddress(dataPair data) {
