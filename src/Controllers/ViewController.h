@@ -17,6 +17,9 @@ namespace controllers {
         void showView();
 
     private:
+
+        void updateView();
+
         std::shared_ptr<model::ModbusModel> mModbusModel;
         std::shared_ptr<views::IView> mMainView;
     };
