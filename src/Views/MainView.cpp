@@ -1,6 +1,7 @@
 #include "MainView.h"
 #include <string>// for string, operator+, basic_string, to_string, char_traits
 #include <vector>// for vector, __alloc_traits<>::value_type
+#include <thread>
 
 #include "ftxui/component/component.hpp"         // for Menu, Renderer, Horizontal, Vertical
 #include "ftxui/component/screen_interactive.hpp"// for Component, ScreenInteractive
@@ -17,8 +18,18 @@ namespace views {
 
         auto slider_x = Slider("x", &focus_x, 0.f, 1.f, 0.01f);
         auto slider_y = Slider("y", &focus_y, 0.f, 1.f, 0.01f);
+        std::vector<std::string> radiobox_list = {
+                "Coils",
+                "Input status",
+                "Input Register",
+                "Holding Register",
+        };
+        int selected = 0;
+        auto radiobox = Radiobox(&radiobox_list, &selected);
+
         mGrid = makeGrid();
         auto renderer = Renderer(Container::Vertical({
+                                         radiobox,
                                          slider_x,
                                          slider_y,
                                  }),
@@ -29,6 +40,7 @@ namespace views {
                                      return vbox({
                                                     text(title),
                                                     separator(),
+                                                    radiobox->Render(),
                                                     slider_x->Render(),
                                                     slider_y->Render(),
                                                     separator(),
@@ -38,6 +50,18 @@ namespace views {
                                  });
 
         auto screen = ScreenInteractive::Fullscreen();
+
+        std::thread refresh_ui([&, this] {
+            while (true) {
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(0.5s);
+                if (mRefreshUI.load()) {
+                    mRefreshUI.store(false);
+                    screen.PostEvent(Event::Custom);
+                }
+            }
+        });
+
         screen.Loop(renderer);
     }
 
@@ -80,6 +104,7 @@ namespace views {
 
     void MainView::updateView() {
         mRefreshUI.store(true);
+        mGrid = makeGrid();
     }
 
 }// namespace views
