@@ -12,6 +12,9 @@
 
 namespace views {
     using namespace ftxui;
+
+    MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel) : mModbusModel(mModbusModel) {}
+
     void MainView::show() {
         float focus_x = 0.0f;
         float focus_y = 0.0f;

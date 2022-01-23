@@ -12,6 +12,7 @@
 #include "ftxui/component/component_base.hpp"    // for ComponentBase
 #include "ftxui/component/screen_interactive.hpp"// for Component, ScreenInteractive
 #include "ftxui/dom/elements.hpp"                // for text, Element, operator|, window, flex, vbox
+#include "ModbusModel.h"
 
 namespace views {
     using namespace ftxui;
@@ -51,6 +52,12 @@ namespace views {
         static Element makeBox(const BoxParameter &param);
         Element makeGrid();
         static void updateBoxParameters(MainView::BoxParameter &param, int i, int j, int hue, int hsv);
+        std::shared_ptr<model::ModbusModel> mModbusModel;
+
+    public:
+        MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel);
+
+    private:
         std::atomic_bool mRefreshUI;
     };
 }// namespace views
