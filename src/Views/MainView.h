@@ -51,5 +51,6 @@ namespace views {
         static Element makeBox(const BoxParameter &param);
         Element makeGrid();
         static void updateBoxParameters(MainView::BoxParameter &param, int i, int j, int hue, int hsv);
+        std::atomic_bool mRefreshUI;
     };
 }// namespace views

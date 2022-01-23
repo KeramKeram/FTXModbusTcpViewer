@@ -79,7 +79,7 @@ namespace views {
     }
 
     void MainView::updateView() {
-
+        mRefreshUI.store(true);
     }
 
 }// namespace views
