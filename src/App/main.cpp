@@ -2,14 +2,14 @@
 
 #include "MainView.h"
 #include "ModbusModel.h"
+#include "ModbusDaemon.h"
 #include "ViewController.h"
 
-int main()
-{
+int main() {
     auto mainView = std::make_shared<views::MainView>();
-    auto empty_lambda = []() {};
-    auto modbusModel = std::make_shared<model::ModbusModel>(empty_lambda);
+    auto modbusModel = std::make_shared<model::ModbusModel>([]() {});
     auto viewController = std::make_unique<controllers::ViewController>(modbusModel, mainView);
-
+    auto modbusDaemon = std::make_unique<modbus::ModbusDaemon>(modbusModel);
+    modbusDaemon->run();
     viewController->showView();
 }
