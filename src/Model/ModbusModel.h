@@ -2,13 +2,14 @@
 #include <functional>
 #include <memory>
 
+#include "IModel.h"
 #include "SafeTHMap.h"
 
 namespace model {
     using safeMap = containers::SafeTHMap<unsigned int, std::string>;
     using dataPair = std::pair<unsigned int, std::string>;
 
-    class ModbusModel {
+    class ModbusModel : public IModel {
     public:
         ModbusModel(std::function<void()> update);
 
