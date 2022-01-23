@@ -78,4 +78,8 @@ namespace views {
         param.mHSVValue = hsv;
     }
 
+    void MainView::updateView() {
+
+    }
+
 }// namespace views

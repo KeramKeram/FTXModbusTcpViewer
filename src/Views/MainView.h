@@ -44,6 +44,10 @@ namespace views {
 
         Element mGrid;
 
+    public:
+        void updateView() override;
+
+    private:
         static Element makeBox(const BoxParameter &param);
         Element makeGrid();
         static void updateBoxParameters(MainView::BoxParameter &param, int i, int j, int hue, int hsv);
