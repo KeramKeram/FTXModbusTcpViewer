@@ -1,4 +1,5 @@
 add_subdirectory(App)
+add_subdirectory(Configuration)
 add_subdirectory(Model)
 add_subdirectory(Modbus)
 add_subdirectory(Views)
