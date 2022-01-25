@@ -7,20 +7,19 @@
 
 namespace controllers {
 
-    class ViewController {
-    public:
-        ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel,
-                       const std::shared_ptr<views::IView> &mMainView);
+class ViewController
+{
+public:
+  ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView);
 
-        virtual ~ViewController() = default;
+  virtual ~ViewController() = default;
 
-        void showView();
+  void showView();
 
-    private:
+private:
+  void updateView();
 
-        void updateView();
-
-        std::shared_ptr<model::ModbusModel> mModbusModel;
-        std::shared_ptr<views::IView> mMainView;
-    };
-}// namespace controllers
+  std::shared_ptr<model::ModbusModel> mModbusModel;
+  std::shared_ptr<views::IView> mMainView;
+};
+}  // namespace controllers
