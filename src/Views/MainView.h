@@ -17,13 +17,16 @@
 namespace views {
     using namespace ftxui;
 
-    constexpr int VIEW_COLUMNS = 10;
-    constexpr int VIEW_ROWS = 10;
+    constexpr int VIEW_COLUMNS = 2;
+    constexpr int VIEW_ROWS = 2;
     constexpr int VIEW_BOX_WIDTH = 8;
     constexpr int VIEW_BOX_HEIGHT = 3;
 
     class MainView : public IView {
     public:
+
+        MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel);
+
         ~MainView() override = default;
 
         void show() override;
@@ -50,14 +53,11 @@ namespace views {
 
     private:
         static Element makeBox(const BoxParameter &param);
-        Element makeGrid();
+        static Element makeGrid();
         static void updateBoxParameters(MainView::BoxParameter &param, int i, int j, int hue, int hsv);
         std::shared_ptr<model::ModbusModel> mModbusModel;
-
-    public:
-        MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel);
-
-    private:
-        std::atomic_bool mRefreshUI;
+        std::atomic_bool mRefreshUI{};
+        int mSelectedRegister;
+        int mPreviousSelectedRegister;
     };
 }// namespace views

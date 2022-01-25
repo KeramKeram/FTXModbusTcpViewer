@@ -1,7 +1,7 @@
 #include "MainView.h"
 #include <string>// for string, operator+, basic_string, to_string, char_traits
-#include <vector>// for vector, __alloc_traits<>::value_type
 #include <thread>
+#include <vector>// for vector, __alloc_traits<>::value_type
 
 #include "ftxui/component/component.hpp"         // for Menu, Renderer, Horizontal, Vertical
 #include "ftxui/component/screen_interactive.hpp"// for Component, ScreenInteractive
@@ -13,7 +13,8 @@
 namespace views {
     using namespace ftxui;
 
-    MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel) : mModbusModel(mModbusModel) {}
+    MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel)
+        : mModbusModel(mModbusModel), mSelectedRegister(0), mPreviousSelectedRegister(0) {}
 
     void MainView::show() {
         float focus_x = 0.0f;
@@ -27,8 +28,7 @@ namespace views {
                 "Input Register",
                 "Holding Register",
         };
-        int selected = 0;
-        auto radiobox = Radiobox(&radiobox_list, &selected);
+        auto radiobox = Radiobox(&radiobox_list, &mSelectedRegister);
 
         mGrid = makeGrid();
         auto renderer = Renderer(Container::Vertical({
@@ -58,7 +58,8 @@ namespace views {
             while (true) {
                 using namespace std::chrono_literals;
                 std::this_thread::sleep_for(0.5s);
-                if (mRefreshUI.load()) {
+                if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
+                    mPreviousSelectedRegister = mSelectedRegister;
                     mRefreshUI.store(false);
                     screen.PostEvent(Event::Custom);
                 }
@@ -107,7 +108,6 @@ namespace views {
 
     void MainView::updateView() {
         mRefreshUI.store(true);
-        mGrid = makeGrid();
     }
 
 }// namespace views
