@@ -39,7 +39,8 @@ void MainView::show()
                              slider_x,
                              slider_y,
                            }),
-                           [&] {
+                           [&]
+                           {
                              auto title = "focusPositionRelative(" +        //
                                           std::to_string(focus_x) + ", " +  //
                                           std::to_string(focus_y) + ")";    //
@@ -57,17 +58,20 @@ void MainView::show()
 
   auto screen = ScreenInteractive::Fullscreen();
 
-  std::thread refresh_ui([&, this] {
-    while (true) {
-      using namespace std::chrono_literals;
-      std::this_thread::sleep_for(0.5s);
-      if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
-        mPreviousSelectedRegister = mSelectedRegister;
-        mRefreshUI.store(false);
-        screen.PostEvent(Event::Custom);
+  std::thread refresh_ui(
+    [&, this]
+    {
+      while (true) {
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(0.5s);
+        if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
+          mPreviousSelectedRegister = mSelectedRegister;
+          mRefreshUI.store(false);
+          mGrid = makeGrid();
+          screen.PostEvent(Event::Custom);
+        }
       }
-    }
-  });
+    });
 
   screen.Loop(renderer);
 }
