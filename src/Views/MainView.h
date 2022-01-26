@@ -51,8 +51,8 @@ public:
   void updateView() override;
 
 private:
-  static Element makeBox(const BoxParameter &param);
-  static Element makeGrid();
+  Element makeBox(const BoxParameter &param);
+  Element makeGrid(int registersType);
   static void updateBoxParameters(MainView::BoxParameter &param, int i, int j, int hue, int hsv);
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::atomic_bool mRefreshUI{};

@@ -33,14 +33,13 @@ void MainView::show()
   };
   auto radiobox = Radiobox(&radiobox_list, &mSelectedRegister);
 
-  mGrid         = makeGrid();
+  mGrid         = makeGrid(mSelectedRegister);
   auto renderer = Renderer(Container::Vertical({
                              radiobox,
                              slider_x,
                              slider_y,
                            }),
-                           [&]
-                           {
+                           [&] {
                              auto title = "focusPositionRelative(" +        //
                                           std::to_string(focus_x) + ", " +  //
                                           std::to_string(focus_y) + ")";    //
@@ -58,20 +57,18 @@ void MainView::show()
 
   auto screen = ScreenInteractive::Fullscreen();
 
-  std::thread refresh_ui(
-    [&, this]
-    {
-      while (true) {
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(0.5s);
-        if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
-          mPreviousSelectedRegister = mSelectedRegister;
-          mRefreshUI.store(false);
-          mGrid = makeGrid();
-          screen.PostEvent(Event::Custom);
-        }
+  std::thread refresh_ui([&, this] {
+    while (true) {
+      using namespace std::chrono_literals;
+      std::this_thread::sleep_for(0.5s);
+      if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
+        mPreviousSelectedRegister = mSelectedRegister;
+        mRefreshUI.store(false);
+        mGrid = makeGrid(mSelectedRegister);
+        screen.PostEvent(Event::Custom);
       }
-    });
+    }
+  });
 
   screen.Loop(renderer);
 }
@@ -83,8 +80,15 @@ Element MainView::makeBox(const BoxParameter &param)
          | bgcolor(Color::HSV(hue, saturation, hvValue));
 }
 
-Element MainView::makeGrid()
+Element MainView::makeGrid(int registersType)
 {
+  std::vector<std::string> vals;
+  switch (registersType) {
+  case 0: vals = mModbusModel->getAllValuesForCoils(); break;
+  case 1: vals = mModbusModel->getAllValuesForInputStatus(); break;
+  case 2: vals = mModbusModel->getAllValuesForInputRegisters(); break;
+  case 3: vals = mModbusModel->getAllValuesForHoldingRegisters(); break;
+  }
   std::vector<Elements> rows;
   std::string val;
   BoxParameter param(0, 0, "", 0, 255, 0);
