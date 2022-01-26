@@ -13,21 +13,21 @@
 #include "ModbusModel.h"
 
 namespace modbus {
-    class ModbusDaemon {
-    public:
-        ModbusDaemon(const std::shared_ptr<model::ModbusModel> &mModbusModel);
+class ModbusDaemon
+{
+public:
+  ModbusDaemon(const std::shared_ptr<model::ModbusModel> &modbusModel);
 
-        void run();
+  void run();
 
-        void stopThread();
+  void stopThread();
 
-    private:
+private:
+  void runFunction();
 
-        void runFunction();
-
-        std::shared_ptr<model::ModbusModel> mModbusModel;
-        std::thread mThread;
-        std::atomic_bool mRun;
-        std::mutex mMutex;
-    };
-}// namespace modbus
+  std::shared_ptr<model::ModbusModel> mModbusModel;
+  std::thread mThread;
+  std::atomic_bool mRun;
+  std::mutex mMutex;
+};
+}  // namespace modbus
