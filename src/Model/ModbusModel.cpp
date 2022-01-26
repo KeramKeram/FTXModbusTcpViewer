@@ -58,5 +58,21 @@ dataPair ModbusModel::getHoldingRegisterAddress(unsigned int address)
 {
   return model::dataPair(address, mHoldingRegisters->get(address));
 }
+std::vector<std::string> ModbusModel::getAllValuesForCoils()
+{
+  return mCoils->getAllValues();
+}
+std::vector<std::string> ModbusModel::getAllValuesForInputStatus()
+{
+  return mInputStatus->getAllValues();
+}
+std::vector<std::string> ModbusModel::getAllValuesForInputRegisters()
+{
+  return mInputRegisters->getAllValues();
+}
+std::vector<std::string> ModbusModel::getAllValuesForHoldingRegisters()
+{
+  return mHoldingRegisters->getAllValues();
+}
 
 }  // namespace model

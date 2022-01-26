@@ -34,6 +34,14 @@ public:
 
   dataPair getHoldingRegisterAddress(unsigned int address);
 
+  std::vector<std::string> getAllValuesForCoils();
+
+  std::vector<std::string> getAllValuesForInputStatus();
+
+  std::vector<std::string> getAllValuesForInputRegisters();
+
+  std::vector<std::string> getAllValuesForHoldingRegisters();
+
 private:
   std::unique_ptr<safeMap> mCoils;
   std::unique_ptr<safeMap> mInputStatus;
