@@ -54,6 +54,7 @@ private:
   Element makeBox(const BoxParameter &param);
   Element makeGrid(int registersType);
   static void updateBoxParameters(MainView::BoxParameter &param, int i, int j, int hue, int hsv);
+  Component createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox);
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::atomic_bool mRefreshUI{};
   int mSelectedRegister;

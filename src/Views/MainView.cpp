@@ -33,27 +33,8 @@ void MainView::show()
   };
   auto radiobox = Radiobox(&radiobox_list, &mSelectedRegister);
 
-  mGrid         = makeGrid(mSelectedRegister);
-  auto renderer = Renderer(Container::Vertical({
-                             radiobox,
-                             slider_x,
-                             slider_y,
-                           }),
-                           [&] {
-                             auto title = "focusPositionRelative(" +        //
-                                          std::to_string(focus_x) + ", " +  //
-                                          std::to_string(focus_y) + ")";    //
-                             return vbox({
-                                      text(title),
-                                      separator(),
-                                      radiobox->Render(),
-                                      slider_x->Render(),
-                                      slider_y->Render(),
-                                      separator(),
-                                      mGrid | focusPositionRelative(focus_x, focus_y) | frame | flex,
-                                    })
-                                    | border;
-                           });
+  mGrid              = makeGrid(mSelectedRegister);
+  Component renderer = createRenderer(focus_x, focus_y, slider_x, slider_y, radiobox);
 
   auto screen = ScreenInteractive::Fullscreen();
 
@@ -120,9 +101,33 @@ void MainView::updateBoxParameters(MainView::BoxParameter &param, int i, int j, 
   param.mHSVValue  = hsv;
 }
 
+Component MainView::createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox)
+{
+  auto renderer = Renderer(Container::Vertical({
+                             radiobox,
+                             slider_x,
+                             slider_y,
+                           }),
+                           [&, this] {
+                             auto title = "focusPositionRelative(" +        //
+                                          std::to_string(focus_x) + ", " +  //
+                                          std::to_string(focus_y) + ")";    //
+                             return vbox({
+                                      text(title),
+                                      separator(),
+                                      radiobox->Render(),
+                                      slider_x->Render(),
+                                      slider_y->Render(),
+                                      separator(),
+                                      mGrid | focusPositionRelative(focus_x, focus_y) | frame | flex,
+                                    })
+                                    | border;
+                           });
+  return renderer;
+}
+
 void MainView::updateView()
 {
   mRefreshUI.store(true);
 }
-
 }  // namespace views
