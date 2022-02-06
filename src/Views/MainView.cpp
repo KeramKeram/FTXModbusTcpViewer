@@ -1,14 +1,15 @@
 #include "MainView.h"
-#include <string>  // for string, operator+, basic_string, to_string, char_traits
+#include <numeric>
+#include <string>
 #include <thread>
-#include <vector>  // for vector, __alloc_traits<>::value_type
+#include <vector>
 
-#include "ftxui/component/component.hpp"           // for Menu, Renderer, Horizontal, Vertical
-#include "ftxui/component/screen_interactive.hpp"  // for Component, ScreenInteractive
-#include "ftxui/dom/elements.hpp"                  // for text, Element, operator|, window, flex, vbox
+#include "TableCreator.h"
 
-
-#include "ftxui/screen/color.hpp"  // for Color, Color::Blue, Color::Cyan, Color::White
+#include "ftxui/component/component.hpp"
+#include "ftxui/component/screen_interactive.hpp"
+#include "ftxui/dom/elements.hpp"
+#include "ftxui/screen/color.hpp"
 
 namespace views {
 using namespace ftxui;
@@ -42,23 +43,16 @@ void MainView::show()
     while (true) {
       using namespace std::chrono_literals;
       std::this_thread::sleep_for(0.5s);
-      if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
+      /*if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
         mPreviousSelectedRegister = mSelectedRegister;
         mRefreshUI.store(false);
         mGrid = makeGrid(mSelectedRegister);
         screen.PostEvent(Event::Custom);
-      }
+      }*/
     }
   });
 
   screen.Loop(renderer);
-}
-
-Element MainView::makeBox(const BoxParameter &param)
-{
-  const auto [x, y, value, hue, saturation, hvValue] = param;
-  return text(value) | center | size(WIDTH, EQUAL, VIEW_BOX_WIDTH) | size(HEIGHT, EQUAL, VIEW_BOX_HEIGHT) | border
-         | bgcolor(Color::HSV(hue, saturation, hvValue));
 }
 
 Element MainView::makeGrid(int registersType)
@@ -70,35 +64,9 @@ Element MainView::makeGrid(int registersType)
   case 2: vals = mModbusModel->getAllValuesForInputRegisters(); break;
   case 3: vals = mModbusModel->getAllValuesForHoldingRegisters(); break;
   }
-  std::vector<Elements> rows;
-  std::string val;
-  BoxParameter param(0, 0, "", 0, 255, 0);
-  for (int i = 0; i < VIEW_COLUMNS; i++) {
-    std::vector<Element> cols;
-    param.mXPosition = i;
-    for (int j = 0; j < VIEW_ROWS; j++) {
-      if (j == 0 && i == 0) {
-        updateBoxParameters(param, i, j, 40, 200);
-      } else if (j == 0) {
-        updateBoxParameters(param, i, j, 85, 100);
-      } else if (i == 0 && j >= 1) {
-        updateBoxParameters(param, i, j, 0, 0);
-      } else {
-        updateBoxParameters(param, i, j, 185, 100);
-      }
-      cols.push_back(makeBox(param));
-    }
-    rows.push_back(cols);
-  }
-
-  return gridbox(rows);
-}
-void MainView::updateBoxParameters(MainView::BoxParameter &param, int i, int j, int hue, int hsv)
-{
-  param.mYPosition = j;
-  param.mBoxValue  = std::to_string(j);
-  param.mHue       = hue;
-  param.mHSVValue  = hsv;
+  TableCreator factory;
+  auto output = factory.createTable(vals);
+  return gridbox(output);
 }
 
 Component MainView::createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox)

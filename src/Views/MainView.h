@@ -17,10 +17,10 @@
 namespace views {
 using namespace ftxui;
 
-constexpr int VIEW_COLUMNS    = 2;
+/*constexpr int VIEW_COLUMNS    = 2;
 constexpr int VIEW_ROWS       = 2;
 constexpr int VIEW_BOX_WIDTH  = 8;
-constexpr int VIEW_BOX_HEIGHT = 3;
+constexpr int VIEW_BOX_HEIGHT = 3;*/
 
 class MainView : public IView
 {
@@ -32,28 +32,13 @@ public:
   void show() override;
 
 private:
-  struct BoxParameter
-  {
-    BoxParameter(int mXPosition, int mYPosition, std::string mBoxValue, uint8_t mHue, uint8_t mSaturation, uint8_t mHsvValue)
-      : mXPosition(mXPosition), mYPosition(mYPosition), mBoxValue(std::move(mBoxValue)), mHue(mHue), mSaturation(mSaturation), mHSVValue(mHsvValue){};
-    ~BoxParameter() = default;
-    int mXPosition;
-    int mYPosition;
-    std::string mBoxValue;
-    uint8_t mHue;
-    uint8_t mSaturation;
-    uint8_t mHSVValue;
-  };
-
   Element mGrid;
 
 public:
   void updateView() override;
 
 private:
-  Element makeBox(const BoxParameter &param);
   Element makeGrid(int registersType);
-  static void updateBoxParameters(MainView::BoxParameter &param, int i, int j, int hue, int hsv);
   Component createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox);
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::atomic_bool mRefreshUI{};
