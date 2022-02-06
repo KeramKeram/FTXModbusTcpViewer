@@ -50,9 +50,6 @@ std::vector<Element> views::TableCreator::createFirstRow(int partsInRow)
 TableCreator::BoxParameter TableCreator::createBoxParameters(std::string value, int hue, int hsv)
 {
   TableCreator::BoxParameter param(value, hue, 255, hsv);
-  param.mBoxValue = value;
-  param.mHue      = hue;
-  param.mHSVValue = hsv;
   return param;
 }
 
