@@ -35,10 +35,11 @@ void MainView::show()
   auto radiobox = Radiobox(&radiobox_list, &mSelectedRegister);
 
   mGrid              = makeGrid(mSelectedRegister);
-  Component renderer = createRenderer(focus_x, focus_y, slider_x, slider_y, radiobox);
+
 
   auto screen = ScreenInteractive::Fullscreen();
-
+  auto buttonQ = Button("Quit", screen.ExitLoopClosure());
+  Component renderer = createRenderer(focus_x, focus_y, slider_x, slider_y, radiobox, buttonQ);
   std::thread refresh_ui([&, this] {
     while (true) {
       using namespace std::chrono_literals;
@@ -69,12 +70,13 @@ Element MainView::makeGrid(int registersType)
   return gridbox(output);
 }
 
-Component MainView::createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox)
+Component MainView::createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton)
 {
   auto renderer = Renderer(Container::Vertical({
                              radiobox,
                              slider_x,
                              slider_y,
+                             qButton
                            }),
                            [&, this] {
                              auto title = "focusPositionRelative(" +        //
@@ -86,6 +88,7 @@ Component MainView::createRenderer(float focus_x, float focus_y, Component &slid
                                       radiobox->Render(),
                                       slider_x->Render(),
                                       slider_y->Render(),
+                                      qButton->Render(),
                                       separator(),
                                       mGrid | focusPositionRelative(focus_x, focus_y) | frame | flex,
                                     })

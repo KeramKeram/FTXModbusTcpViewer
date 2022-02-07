@@ -34,7 +34,7 @@ public:
 
 private:
   Element makeGrid(int registersType);
-  Component createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox);
+  Component createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton);
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::atomic_bool mRefreshUI{};
   int mSelectedRegister;
