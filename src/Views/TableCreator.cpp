@@ -1,7 +1,6 @@
 #include "TableCreator.h"
-#include <numeric>
+
 #include <string>
-#include <thread>
 #include <vector>
 
 namespace views {
