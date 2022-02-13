@@ -29,8 +29,8 @@ private:
     uint8_t mHSVValue;
   };
 
-  TableCreator::BoxParameter createBoxParameters(std::string value, int hue, int hsv);
-  ftxui::Element makeBox(const BoxParameter &param);
+  static TableCreator::BoxParameter createBoxParameters(std::string value, int hue, int hsv);
+  static ftxui::Element makeBox(const BoxParameter &param);
   std::vector<Element> createFirstRow(int partsInRow);
   void populateTable(const std::vector<std::string> &vals, std::vector<Elements> &rows, int partsInRow);
 };

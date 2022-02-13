@@ -1,5 +1,4 @@
 #include "MainView.h"
-#include <numeric>
 #include <string>
 #include <thread>
 #include <vector>
@@ -9,7 +8,6 @@
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/dom/elements.hpp"
-#include "ftxui/screen/color.hpp"
 
 namespace views {
 using namespace ftxui;
@@ -64,6 +62,8 @@ Element MainView::makeGrid(int registersType)
   case 1: vals = mModbusModel->getAllValuesForInputStatus(); break;
   case 2: vals = mModbusModel->getAllValuesForInputRegisters(); break;
   case 3: vals = mModbusModel->getAllValuesForHoldingRegisters(); break;
+  default:
+    break;
   }
   TableCreator factory;
   auto output = factory.createTable(vals);

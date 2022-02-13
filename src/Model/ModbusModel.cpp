@@ -2,12 +2,13 @@
 
 namespace model {
 
-ModbusModel::ModbusModel(std::function<void()> update) : mModelsUpdatedCallback(update)
+ModbusModel::ModbusModel(std::function<void()> update)
+  : mModelsUpdatedCallback(update)
+  , mCoils(std::make_unique<safeMap>())
+  , mInputStatus(std::make_unique<safeMap>())
+  , mInputRegisters(std::make_unique<safeMap>())
+  , mHoldingRegisters(std::make_unique<safeMap>())
 {
-  mCoils            = std::make_unique<safeMap>();
-  mInputStatus      = std::make_unique<safeMap>();
-  mInputRegisters   = std::make_unique<safeMap>();
-  mHoldingRegisters = std::make_unique<safeMap>();
 }
 
 void ModbusModel::setUpdateCallback(std::function<void()> modelsUpdatedCallback)
@@ -46,17 +47,17 @@ dataPair ModbusModel::getCoilAddress(unsigned int address)
 
 dataPair ModbusModel::getInputStatusAddress(unsigned int address)
 {
-  return model::dataPair(address, mInputStatus->get(address));
+  return { model::dataPair(address, mInputStatus->get(address)) };
 }
 
 dataPair ModbusModel::getInputRegisterAddress(unsigned int address)
 {
-  return model::dataPair(address, mInputRegisters->get(address));
+  return { model::dataPair(address, mInputRegisters->get(address)) };
 }
 
 dataPair ModbusModel::getHoldingRegisterAddress(unsigned int address)
 {
-  return model::dataPair(address, mHoldingRegisters->get(address));
+  return { model::dataPair(address, mHoldingRegisters->get(address)) };
 }
 std::vector<std::string> ModbusModel::getAllValuesForCoils()
 {

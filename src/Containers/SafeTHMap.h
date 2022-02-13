@@ -11,7 +11,7 @@ public:
   SafeTHMap()  = default;
   ~SafeTHMap() = default;
 
-  void add(T &key, V &value)
+  void add(const T &key, const V &value)
   {
     std::lock_guard<std::mutex> lk(mMutex);
     mContainer[key] = value;
@@ -23,7 +23,7 @@ public:
     mContainer.erase(key);
   }
 
-  V get(T &key)
+  V get(const T &key)
   {
     std::lock_guard<std::mutex> lk(mMutex);
     return mContainer[key];

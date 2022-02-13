@@ -17,7 +17,7 @@ class ModbusDaemon
 {
 public:
   ModbusDaemon(const std::shared_ptr<model::ModbusModel> &modbusModel);
-
+  virtual ~ModbusDaemon();
   void run();
 
   void stopThread();

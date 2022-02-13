@@ -7,10 +7,16 @@ ModbusDaemon::ModbusDaemon(const std::shared_ptr<model::ModbusModel> &modbusMode
 {
 }
 
+ModbusDaemon::~ModbusDaemon()
+{
+  stopThread();
+}
+
 void ModbusDaemon::run()
 {
   mThread = std::thread(&ModbusDaemon::runFunction, this);
 }
+
 void ModbusDaemon::stopThread()
 {
   mRun.store(false);
@@ -25,7 +31,8 @@ void ModbusDaemon::runFunction()
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(2000ms);
     std::string str = "1";
-    mModbusModel->setCoilAddress(dataPair(1, str));
+    //mModbusModel->setCoilAddress(dataPair(1, str));
   }
 }
+
 }  // namespace modbus

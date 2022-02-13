@@ -12,11 +12,11 @@ using dataPair = std::pair<unsigned int, std::string>;
 class ModbusModel : public IModel
 {
 public:
-  ModbusModel(std::function<void()> update);
+  explicit ModbusModel(std::function<void()> update);
 
-  ~ModbusModel() = default;
+  ~ModbusModel() override = default;
 
-  void setUpdateCallback(std::function<void()> modelsUpdatedCallback);
+  void setUpdateCallback(std::function<void()> modelsUpdatedCallback) override;
 
   void setCoilAddress(dataPair data);
 

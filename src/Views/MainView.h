@@ -1,18 +1,18 @@
 #pragma once
 #include "IView.h"
 
-#include <memory>    // for allocator, __shared_ptr_access
-#include <stdlib.h>  // for EXIT_SUCCESS
-#include <string>    // for string, operator+, basic_string, to_string, char_traits
+#include <memory>
+#include <stdlib.h>
+#include <string>
 #include <utility>
-#include <vector>  // for vector, __alloc_traits<>::value_type
+#include <vector>
 
-#include "ftxui/component/captured_mouse.hpp"      // for ftxui
-#include "ftxui/component/component.hpp"           // for Menu, Renderer, Horizontal, Vertical
-#include "ftxui/component/component_base.hpp"      // for ComponentBase
-#include "ftxui/component/screen_interactive.hpp"  // for Component, ScreenInteractive
-#include "ftxui/dom/elements.hpp"                  // for text, Element, operator|, window, flex, vbox
 #include "ModbusModel.h"
+#include "ftxui/component/captured_mouse.hpp"
+#include "ftxui/component/component.hpp"
+#include "ftxui/component/component_base.hpp"
+#include "ftxui/component/screen_interactive.hpp"
+#include "ftxui/dom/elements.hpp"
 
 namespace views {
 using namespace ftxui;
@@ -20,7 +20,7 @@ using namespace ftxui;
 class MainView : public IView
 {
 public:
-  MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel);
+  explicit MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel);
 
   ~MainView() override = default;
 
