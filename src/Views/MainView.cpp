@@ -40,18 +40,18 @@ void MainView::show()
   auto screen = ScreenInteractive::Fullscreen();
   auto buttonQ = Button("Quit", screen.ExitLoopClosure());
   Component renderer = createRenderer(focus_x, focus_y, slider_x, slider_y, radiobox, buttonQ);
-  std::thread refresh_ui([&, this] {
+  /*std::thread refresh_ui([&, this] {
     while (true) {
       using namespace std::chrono_literals;
       std::this_thread::sleep_for(0.5s);
-      /*if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
+      if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
         mPreviousSelectedRegister = mSelectedRegister;
         mRefreshUI.store(false);
         mGrid = makeGrid(mSelectedRegister);
         screen.PostEvent(Event::Custom);
-      }*/
+      }
     }
-  });
+  });*/
 
   screen.Loop(renderer);
 }
