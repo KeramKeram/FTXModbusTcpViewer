@@ -1,4 +1,3 @@
-
 set(LIB_NAME Configuration)
 
 aux_source_directory(. SRC_FILES)
