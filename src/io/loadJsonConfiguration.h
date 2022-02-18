@@ -1,5 +1,7 @@
 #pragma once
+#include "json/json.h"
 
+#include <fstream>
 #include <string>
 
 namespace io {
@@ -23,5 +25,8 @@ public:
   ~loadJsonConfiguration() = default;
 
   RegisterConfiguration getRegisterConfiguration();
+
+private:
+  Json::Value mValue;
 };
 }  // namespace io
