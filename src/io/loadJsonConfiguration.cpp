@@ -10,14 +10,14 @@ loadJsonConfiguration::loadJsonConfiguration(const std::string &filePath)
 configuration::RegisterConfiguration loadJsonConfiguration::getRegisterConfiguration()
 {
   configuration::RegisterConfiguration configuration;
-  configuration.mCoilsStart            = mValue["register-interval"]["coils-start"].asUInt();
-  configuration.mCoilsEnd              = mValue["register-interval"]["coils-end"].asUInt();
-  configuration.mInputStatusStart      = mValue["register-interval"]["input-status-start"].asUInt();
-  configuration.mInputStatusEnd        = mValue["register-interval"]["input-status-end"].asUInt();
-  configuration.mInputRegistersStart   = mValue["register-interval"]["input-register-start"].asUInt();
-  configuration.mInputRegistersEnd     = mValue["register-interval"]["input-register-end"].asUInt();
-  configuration.mHoldingRegistersStart = mValue["register-interval"]["holding-register-start"].asUInt();
-  configuration.mHoldingRegistersEnd   = mValue["register-interval"]["holding-register-end"].asUInt();
+  configuration.mCoilsStart            = mValue[REGISTER_INTERVAL]["coils-start"].asUInt();
+  configuration.mCoilsEnd              = mValue[REGISTER_INTERVAL]["coils-end"].asUInt();
+  configuration.mInputStatusStart      = mValue[REGISTER_INTERVAL]["input-status-start"].asUInt();
+  configuration.mInputStatusEnd        = mValue[REGISTER_INTERVAL]["input-status-end"].asUInt();
+  configuration.mInputRegistersStart   = mValue[REGISTER_INTERVAL]["input-register-start"].asUInt();
+  configuration.mInputRegistersEnd     = mValue[REGISTER_INTERVAL]["input-register-end"].asUInt();
+  configuration.mHoldingRegistersStart = mValue[REGISTER_INTERVAL]["holding-register-start"].asUInt();
+  configuration.mHoldingRegistersEnd   = mValue[REGISTER_INTERVAL]["holding-register-end"].asUInt();
   return configuration;
 }
 

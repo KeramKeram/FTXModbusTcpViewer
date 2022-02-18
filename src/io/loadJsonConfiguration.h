@@ -8,7 +8,7 @@
 #include "json/json.h"
 
 namespace io {
-
+constexpr char REGISTER_INTERVAL[]  = "register-interval";
 
 class loadJsonConfiguration
 {
