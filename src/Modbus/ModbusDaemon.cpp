@@ -1,7 +1,9 @@
 #include "ModbusDaemon.h"
 #include <chrono>
 
-namespace modbus {
+#include "modbus.h"
+
+namespace Modbus {
 
 ModbusDaemon::ModbusDaemon(const std::shared_ptr<model::ModbusModel> &modbusModel) : mModbusModel(modbusModel)
 {

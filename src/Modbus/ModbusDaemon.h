@@ -12,7 +12,7 @@
 
 #include "ModbusModel.h"
 
-namespace modbus {
+namespace Modbus {
 class ModbusDaemon
 {
 public:
