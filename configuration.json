@@ -1,10 +1,12 @@
 {
-  "coils-start": 0,
-  "coils-end": 100,
-  "input-status-start": 0,
-  "input-status-end": 100,
-  "input-register-start": 0,
-  "input-register-end": 100,
-  "holding-register-start": 0,
-  "holding-register-end": 100
+  "register-interval:": {
+    "coils-start": 0,
+    "coils-end": 100,
+    "input-status-start": 0,
+    "input-status-end": 100,
+    "input-register-start": 0,
+    "input-register-end": 100,
+    "holding-register-start": 0,
+    "holding-register-end": 100
+ }
 }
