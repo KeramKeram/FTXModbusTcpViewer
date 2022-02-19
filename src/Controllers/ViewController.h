@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "RegisterType.h"
 #include "MainView.h"
 #include "ModbusModel.h"
 
@@ -15,6 +16,8 @@ public:
   virtual ~ViewController() = default;
 
   void showView();
+
+  void updateModel(common::RegisterType regType, model::dataPair);
 
 private:
   void updateView();

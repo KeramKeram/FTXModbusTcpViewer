@@ -16,4 +16,7 @@ void ViewController::updateView()
 {
   mMainView->updateView();
 }
+void ViewController::updateModel(common::RegisterType regType, model::dataPair)
+{
+}
 }  // namespace controllers

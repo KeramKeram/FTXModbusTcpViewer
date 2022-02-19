@@ -1,5 +1,4 @@
-
-set(LIB_NAME Controllers)
+set(LIB_NAME Common)
 
 aux_source_directory(. SRC_FILES)
 
@@ -13,10 +12,6 @@ else ()
 endif ()
 
 target_include_directories(${LIB_NAME} INTERFACE .)
-
-target_link_libraries(${LIB_NAME} PRIVATE Model)
-target_link_libraries(${LIB_NAME} PRIVATE Views)
-target_link_libraries(${LIB_NAME} PUBLIC Common)
 
 target_compile_options(
         ${LIB_NAME} PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>:-Wall -O3 -Wno-unused-parameter>
