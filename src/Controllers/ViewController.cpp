@@ -16,7 +16,13 @@ void ViewController::updateView()
 {
   mMainView->updateView();
 }
-void ViewController::updateModel(common::RegisterType regType, model::dataPair)
+void ViewController::updateModel(common::RegisterType regType, model::dataPair &registerWithValue)
 {
+  switch (regType) {
+  case common::RegisterType::Coils: mModbusModel->setCoilAddress(registerWithValue);
+  case common::RegisterType::HoldingRegister: mModbusModel->setHoldingRegisterAddress(registerWithValue);
+  case common::RegisterType::InputRegister: mModbusModel->setInputRegisterAddress(registerWithValue);
+  case common::RegisterType::InputStatus: mModbusModel->setInputStatusAddress(registerWithValue);
+  }
 }
 }  // namespace controllers

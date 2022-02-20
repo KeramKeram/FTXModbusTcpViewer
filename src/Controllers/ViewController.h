@@ -17,7 +17,7 @@ public:
 
   void showView();
 
-  void updateModel(common::RegisterType regType, model::dataPair);
+  void updateModel(common::RegisterType regType, model::dataPair &registerWithValue);
 
 private:
   void updateView();
