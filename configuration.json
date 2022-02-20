@@ -1,12 +1,17 @@
 {
-  "register-interval:": {
+  "register-interval": {
     "coils-start": 0,
-    "coils-end": 100,
+    "coils-end": 90,
     "input-status-start": 0,
-    "input-status-end": 100,
+    "input-status-end": 90,
     "input-register-start": 0,
-    "input-register-end": 100,
+    "input-register-end": 90,
     "holding-register-start": 0,
-    "holding-register-end": 100
- }
+    "holding-register-end": 90
+ },
+
+  "network-configuration": {
+    "ip-address": "127.0.0.1",
+    "port": 5020
+  }
 }
