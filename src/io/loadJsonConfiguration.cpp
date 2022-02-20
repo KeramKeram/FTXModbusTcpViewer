@@ -27,6 +27,7 @@ configuration::NetworkConfiguration loadJsonConfiguration::getNetworkConfigurati
   configuration::NetworkConfiguration netConfiguration;
   netConfiguration.mModbusTcpAddress = mValue[NETWORK_CONFIGURATION]["ip-address"].asString();
   netConfiguration.mTCPPort          = mValue[NETWORK_CONFIGURATION]["port"].asUInt();
+  netConfiguration.mSlaveId          = mValue[NETWORK_CONFIGURATION]["slave-id"].asUInt();
   return netConfiguration;
 }
 

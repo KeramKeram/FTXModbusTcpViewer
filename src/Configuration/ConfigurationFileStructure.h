@@ -17,5 +17,6 @@ struct RegisterConfiguration
 struct NetworkConfiguration {
   std::string mModbusTcpAddress;
   unsigned int mTCPPort;
+  unsigned int mSlaveId;
 };
 }  // namespace configuration
