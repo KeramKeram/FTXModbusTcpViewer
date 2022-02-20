@@ -2,12 +2,15 @@
 #include <chrono>
 
 #include "modbus.h"
+#include "Configuration.h"
 
 namespace Modbus {
 
-ModbusDaemon::ModbusDaemon(const std::shared_ptr<controllers::ViewController> &mViewController) : mViewController(mViewController)
+ModbusDaemon::ModbusDaemon(const std::shared_ptr<controllers::ViewController> &mViewController, const configuration::Configuration &mConfiguration)
+  : mViewController(mViewController), mConfiguration(mConfiguration)
 {
 }
+
 
 ModbusDaemon::~ModbusDaemon()
 {

@@ -11,12 +11,13 @@
 #include <condition_variable>
 
 #include "ViewController.h"
+#include "Configuration.h"
 
 namespace Modbus {
 class ModbusDaemon
 {
 public:
-  explicit ModbusDaemon(const std::shared_ptr<controllers::ViewController> &mViewController);
+  ModbusDaemon(const std::shared_ptr<controllers::ViewController> &mViewController, const configuration::Configuration &mConfiguration);
   virtual ~ModbusDaemon();
   void run();
 
@@ -26,6 +27,7 @@ private:
   void runFunction();
 
   std::shared_ptr<controllers::ViewController> mViewController;
+  configuration::Configuration mConfiguration;
   std::thread mThread;
   std::atomic_bool mRun;
   std::mutex mMutex;
