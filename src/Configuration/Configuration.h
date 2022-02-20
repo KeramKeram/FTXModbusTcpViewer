@@ -5,5 +5,6 @@
 namespace configuration {
     struct Configuration {
       RegisterConfiguration mRegisterConfiguration;
+      NetworkConfiguration mNetworkConfiguration;
     };
 }

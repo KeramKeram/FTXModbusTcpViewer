@@ -7,6 +7,7 @@ loadJsonConfiguration::loadJsonConfiguration(const std::string &filePath)
   std::ifstream file(filePath);
   if (file.is_open()) { file >> mValue; }
 }
+
 configuration::RegisterConfiguration loadJsonConfiguration::getRegisterConfiguration()
 {
   configuration::RegisterConfiguration configuration;
@@ -19,6 +20,14 @@ configuration::RegisterConfiguration loadJsonConfiguration::getRegisterConfigura
   configuration.mHoldingRegistersStart = mValue[REGISTER_INTERVAL]["holding-register-start"].asUInt();
   configuration.mHoldingRegistersEnd   = mValue[REGISTER_INTERVAL]["holding-register-end"].asUInt();
   return configuration;
+}
+
+configuration::NetworkConfiguration loadJsonConfiguration::getNetworkConfiguration()
+{
+  configuration::NetworkConfiguration netConfiguration;
+  netConfiguration.mModbusTcpAddress = mValue[NETWORK_CONFIGURATION]["ip-address"].asString();
+  netConfiguration.mTCPPort          = mValue[NETWORK_CONFIGURATION]["port"].asUInt();
+  return netConfiguration;
 }
 
 }  // namespace io

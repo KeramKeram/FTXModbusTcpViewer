@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace configuration {
 struct RegisterConfiguration
@@ -11,5 +12,10 @@ struct RegisterConfiguration
   unsigned int mInputRegistersEnd{ 0 };
   unsigned int mHoldingRegistersStart{ 0 };
   unsigned int mHoldingRegistersEnd{ 0 };
+};
+
+struct NetworkConfiguration {
+  std::string mModbusTcpAddress;
+  unsigned int mTCPPort;
 };
 }  // namespace configuration

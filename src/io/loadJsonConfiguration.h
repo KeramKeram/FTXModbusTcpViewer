@@ -9,6 +9,7 @@
 
 namespace io {
 constexpr char REGISTER_INTERVAL[]  = "register-interval";
+constexpr char NETWORK_CONFIGURATION[]  = "network-configuration";
 
 class loadJsonConfiguration
 {
@@ -18,6 +19,8 @@ public:
   ~loadJsonConfiguration() = default;
 
   configuration::RegisterConfiguration getRegisterConfiguration();
+
+  configuration::NetworkConfiguration getNetworkConfiguration();
 
 private:
   Json::Value mValue;
