@@ -5,7 +5,7 @@
 
 namespace Modbus {
 
-ModbusDaemon::ModbusDaemon(const std::shared_ptr<model::ModbusModel> &modbusModel) : mModbusModel(modbusModel)
+ModbusDaemon::ModbusDaemon(const std::shared_ptr<controllers::ViewController> &mViewController) : mViewController(mViewController)
 {
 }
 

@@ -10,13 +10,13 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "ModbusModel.h"
+#include "ViewController.h"
 
 namespace Modbus {
 class ModbusDaemon
 {
 public:
-  ModbusDaemon(const std::shared_ptr<model::ModbusModel> &modbusModel);
+  explicit ModbusDaemon(const std::shared_ptr<controllers::ViewController> &mViewController);
   virtual ~ModbusDaemon();
   void run();
 
@@ -25,9 +25,9 @@ public:
 private:
   void runFunction();
 
-  std::shared_ptr<model::ModbusModel> mModbusModel;
+  std::shared_ptr<controllers::ViewController> mViewController;
   std::thread mThread;
   std::atomic_bool mRun;
   std::mutex mMutex;
 };
-}  // namespace modbus
+}  // namespace Modbus
