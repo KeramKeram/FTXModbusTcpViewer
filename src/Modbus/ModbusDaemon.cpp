@@ -1,8 +1,7 @@
 #include "ModbusDaemon.h"
-#include <chrono>
 
-#include "modbus.h"
 #include "Configuration.h"
+#include "RegisterType.h"
 
 namespace Modbus {
 
@@ -31,13 +30,35 @@ void ModbusDaemon::stopThread()
 void ModbusDaemon::runFunction()
 {
   mRun.store(true);
-  while (mRun.load()) {
-    using dataPair = std::pair<unsigned int, std::string>;
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(2000ms);
-    std::string str = "1";
-    //mModbusModel->setCoilAddress(dataPair(1, str));
+  auto modbusConnection = modbus(mConfiguration.mNetworkConfiguration.mModbusTcpAddress, mConfiguration.mNetworkConfiguration.mTCPPort);
+  modbusConnection.modbus_set_slave_id(mConfiguration.mNetworkConfiguration.mSlaveId);
+  modbusConnection.modbus_connect();
+
+  while (mRun.load()) { bool read_coil; }
+}
+
+void ModbusDaemon::fillModelCoils(unsigned int start, unsigned int stop, modbus &modbusConnection)
+{
+  bool readReg = false;
+  for (unsigned int i = start; i < stop; i++) {
+    modbusConnection.modbus_read_coils(i, 1, &readReg);
+    dataPair reg(i, std::to_string(readReg));
+    mViewController->updateModel(common::RegisterType::Coils, reg);
   }
 }
 
-}  // namespace modbus
+void ModbusDaemon::fillModelCoils(common::RegisterType type, unsigned int start, unsigned int stop, modbus &modbusConnection)
+{
+  if (type == common::RegisterType::Coils || type == common::RegisterType::InputStatus) { return; }
+  uint16_t readReg = 0;
+  for (unsigned int i = start; i < stop; i++) {
+    switch (type) {
+    case common::RegisterType::HoldingRegister: modbusConnection.modbus_read_holding_registers(i, 1, &readReg); break;
+    case common::RegisterType::InputRegister: modbusConnection.modbus_read_input_registers(i, 1, &readReg); break;
+    }
+    dataPair reg(i, std::to_string(readReg));
+    mViewController->updateModel(type, reg);
+  }
+}
+
+}  // namespace Modbus
