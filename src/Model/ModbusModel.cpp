@@ -1,11 +1,9 @@
 #include "ModbusModel.h"
 
-#include <utility>
-
 namespace model {
 
 ModbusModel::ModbusModel(std::function<void()> update)
-  : mModelsUpdatedCallback(std::move(update))
+  : mModelsUpdatedCallback(update)
   , mCoils(std::make_unique<safeMap>())
   , mInputStatus(std::make_unique<safeMap>())
   , mInputRegisters(std::make_unique<safeMap>())
@@ -18,25 +16,25 @@ void ModbusModel::setUpdateCallback(std::function<void()> modelsUpdatedCallback)
   mModelsUpdatedCallback = std::move(modelsUpdatedCallback);
 }
 
-void ModbusModel::setCoilAddress(const dataPair& data)
+void ModbusModel::setCoilAddress(dataPair data)
 {
   mCoils->add(data.first, data.second);
   mModelsUpdatedCallback();
 }
 
-void ModbusModel::setInputStatusAddress(const dataPair& data)
+void ModbusModel::setInputStatusAddress(dataPair data)
 {
   mInputStatus->add(data.first, data.second);
   mModelsUpdatedCallback();
 }
 
-void ModbusModel::setInputRegisterAddress(const dataPair& data)
+void ModbusModel::setInputRegisterAddress(dataPair data)
 {
   mInputRegisters->add(data.first, data.second);
   mModelsUpdatedCallback();
 }
 
-void ModbusModel::setHoldingRegisterAddress(const dataPair& data)
+void ModbusModel::setHoldingRegisterAddress(dataPair data)
 {
   mHoldingRegisters->add(data.first, data.second);
   mModelsUpdatedCallback();

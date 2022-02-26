@@ -1,4 +1,5 @@
 #include "ViewController.h"
+#include <iostream>
 
 namespace controllers {
 ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView)

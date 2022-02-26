@@ -18,13 +18,13 @@ public:
 
   void setUpdateCallback(std::function<void()> modelsUpdatedCallback) override;
 
-  void setCoilAddress(const dataPair& data);
+  void setCoilAddress(dataPair data);
 
-  void setInputStatusAddress(const dataPair& data);
+  void setInputStatusAddress(dataPair data);
 
-  void setInputRegisterAddress(const dataPair& data);
+  void setInputRegisterAddress(dataPair data);
 
-  void setHoldingRegisterAddress(const dataPair& data);
+  void setHoldingRegisterAddress(dataPair data);
 
   dataPair getCoilAddress(unsigned int address);
 

@@ -30,6 +30,6 @@ private:
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::shared_ptr<views::IView> mMainView;
 
-  std::atomic<int> mSelectedModel{};
+  std::atomic<int> mSelectedModel;
 };
 }  // namespace controllers
