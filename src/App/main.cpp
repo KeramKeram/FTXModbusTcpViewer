@@ -8,7 +8,7 @@
 #include "loadJsonConfiguration.h"
 int main()
 {
-  io::loadJsonConfiguration conf("/home/radek/programowanie/cpp/FTXModbusTcpViewer/configuration.json");
+  io::loadJsonConfiguration conf("test_path");
   configuration::Configuration configuration;
   configuration.mRegisterConfiguration = conf.getRegisterConfiguration();
   configuration.mNetworkConfiguration  = conf.getNetworkConfiguration();
