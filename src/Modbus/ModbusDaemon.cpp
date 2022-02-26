@@ -36,16 +36,16 @@ void ModbusDaemon::runFunction()
 
   while (mRun.load()) {
     fillModelCoils(mConfiguration.mRegisterConfiguration.mCoilsStart, mConfiguration.mRegisterConfiguration.mCoilsEnd, modbusConnection);
-
-    fillModelCoils(common::RegisterType::InputRegister,
-                   mConfiguration.mRegisterConfiguration.mInputRegistersStart,
-                   mConfiguration.mRegisterConfiguration.mInputRegistersEnd,
-                   modbusConnection);
-
-    fillModelCoils(common::RegisterType::HoldingRegister,
-                   mConfiguration.mRegisterConfiguration.mInputRegistersStart,
-                   mConfiguration.mRegisterConfiguration.mInputRegistersEnd,
-                   modbusConnection);
+    fillIntegerModel(common::RegisterType::InputRegister,
+                     mConfiguration.mRegisterConfiguration.mInputRegistersStart,
+                     mConfiguration.mRegisterConfiguration.mInputRegistersEnd,
+                     modbusConnection);
+    fillIntegerModel(common::RegisterType::HoldingRegister,
+                     mConfiguration.mRegisterConfiguration.mHoldingRegistersStart,
+                     mConfiguration.mRegisterConfiguration.mHoldingRegistersEnd,
+                     modbusConnection);
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(0.1s);
   }
 }
 
@@ -59,7 +59,7 @@ void ModbusDaemon::fillModelCoils(unsigned int start, unsigned int stop, modbus 
   }
 }
 
-void ModbusDaemon::fillModelCoils(common::RegisterType type, unsigned int start, unsigned int stop, modbus &modbusConnection)
+void ModbusDaemon::fillIntegerModel(common::RegisterType type, unsigned int start, unsigned int stop, modbus &modbusConnection)
 {
   if (type == common::RegisterType::Coils || type == common::RegisterType::InputStatus) { return; }
   uint16_t readReg = 0;

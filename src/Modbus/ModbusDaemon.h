@@ -36,7 +36,7 @@ private:
 
   void fillModelCoils(unsigned int start, unsigned int stop, modbus &modbusConnection);
 
-  void fillModelCoils(common::RegisterType type, unsigned int start, unsigned int stop, modbus &modbusConnection);
+  void fillIntegerModel(common::RegisterType type, unsigned int start, unsigned int stop, modbus &modbusConnection);
 
   std::shared_ptr<controllers::ViewController> mViewController;
   configuration::Configuration mConfiguration;
