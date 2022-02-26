@@ -5,6 +5,7 @@
 #include <memory>
 #include <stdlib.h>
 #include <string>
+#include <thread>
 #include <utility>
 #include <vector>
 
@@ -23,7 +24,7 @@ class MainView : public IView
 public:
   MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel);
 
-  ~MainView() override = default;
+  virtual ~MainView();
 
   void show() override;
 
@@ -43,5 +44,7 @@ private:
   std::atomic_bool mRefreshUI{};
   int mSelectedRegister;
   int mPreviousSelectedRegister;
+  std::thread mRefreshThread;
+  std::atomic<bool> mStopInternalThreads;
 };
 }  // namespace views
