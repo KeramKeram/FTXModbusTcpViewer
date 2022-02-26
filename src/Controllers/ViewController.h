@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <memory>
 
 #include "RegisterType.h"
@@ -19,10 +20,16 @@ public:
 
   void updateModel(common::RegisterType regType, model::dataPair &registerWithValue);
 
+  unsigned int getCurrentModelView();
+
 private:
   void updateView();
 
+  void updateSelectedModel(int selected);
+
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::shared_ptr<views::IView> mMainView;
+
+  std::atomic<int> mSelectedModel;
 };
 }  // namespace controllers
