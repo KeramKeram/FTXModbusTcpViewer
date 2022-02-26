@@ -2,7 +2,7 @@
 #include <string>
 #include <thread>
 #include <vector>
-
+#include <iostream>
 #include "TableCreator.h"
 
 #include "ftxui/component/component.hpp"
@@ -12,8 +12,8 @@
 namespace views {
 using namespace ftxui;
 
-MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel)
-  : mModbusModel(mModbusModel), mSelectedRegister(0), mPreviousSelectedRegister(0)
+MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel)
+  : mModbusModel(mModbusModel), mSelectedRegister(0), mPreviousSelectedRegister(0), mUpdateSelectedModel(updateselectedModel)
 {
 }
 
@@ -32,18 +32,20 @@ void MainView::show()
   };
   auto radiobox = Radiobox(&radiobox_list, &mSelectedRegister);
 
+  mUpdateSelectedModel(mSelectedRegister);
   mGrid = makeGrid(mSelectedRegister);
-
 
   auto screen        = ScreenInteractive::Fullscreen();
   auto buttonQ       = Button("Quit", screen.ExitLoopClosure());
   Component renderer = createRenderer(focus_x, focus_y, slider_x, slider_y, radiobox, buttonQ);
+
   std::thread refresh_ui([&, this] {
     while (true) {
       using namespace std::chrono_literals;
       std::this_thread::sleep_for(0.5s);
       if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
         mPreviousSelectedRegister = mSelectedRegister;
+        mUpdateSelectedModel(mSelectedRegister);
         mRefreshUI.store(false);
         mGrid = makeGrid(mSelectedRegister);
         screen.PostEvent(Event::Custom);
@@ -62,10 +64,8 @@ Element MainView::makeGrid(int registersType)
   case 1: vals = mModbusModel->getAllValuesForInputStatus(); break;
   case 2: vals = mModbusModel->getAllValuesForInputRegisters(); break;
   case 3: vals = mModbusModel->getAllValuesForHoldingRegisters(); break;
-  default:
-    break;
+  default: break;
   }
-  vals = mModbusModel->getAllValuesForCoils();
   TableCreator factory;
   auto output = factory.createTable(vals);
   return gridbox(output);
@@ -96,4 +96,10 @@ void MainView::updateView()
 {
   mRefreshUI.store(true);
 }
+
+void MainView::setSelectedModel(std::function<void(int)> func)
+{
+  mUpdateSelectedModel = std::move(func);
+}
+
 }  // namespace views

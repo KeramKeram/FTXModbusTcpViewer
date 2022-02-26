@@ -1,15 +1,21 @@
 #include <memory>
 
+#include "Configuration.h"
 #include "MainView.h"
 #include "ModbusModel.h"
 #include "ModbusDaemon.h"
 #include "ViewController.h"
-
-int main() {
-    auto modbusModel = std::make_shared<model::ModbusModel>([]() {});
-    auto mainView = std::make_shared<views::MainView>(modbusModel);
-    auto viewController = std::make_unique<controllers::ViewController>(modbusModel, mainView);
-    auto modbusDaemon = std::make_unique<modbus::ModbusDaemon>(modbusModel);
-    modbusDaemon->run();
-    viewController->showView();
+#include "loadJsonConfiguration.h"
+int main()
+{
+  io::loadJsonConfiguration conf("/home/radek/programowanie/cpp/FTXModbusTcpViewer/configuration.json");
+  configuration::Configuration configuration;
+  configuration.mRegisterConfiguration = conf.getRegisterConfiguration();
+  configuration.mNetworkConfiguration  = conf.getNetworkConfiguration();
+  auto modbusModel                     = std::make_shared<model::ModbusModel>([]() {});
+  auto mainView       = std::make_shared<views::MainView>(modbusModel, [](int x){});
+  auto viewController = std::make_shared<controllers::ViewController>(modbusModel, mainView);
+  auto modbusDaemon   = std::make_unique<Modbus::ModbusDaemon>(viewController, configuration);
+  modbusDaemon->run();
+  viewController->showView();
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "IView.h"
 
+#include <functional>
 #include <memory>
 #include <stdlib.h>
 #include <string>
@@ -20,7 +21,7 @@ using namespace ftxui;
 class MainView : public IView
 {
 public:
-  explicit MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel);
+  MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel);
 
   ~MainView() override = default;
 
@@ -31,11 +32,14 @@ private:
 
 public:
   void updateView() override;
+  void setSelectedModel(std::function<void(int)> func) override;
 
 private:
   Element makeGrid(int registersType);
   Component createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton);
+
   std::shared_ptr<model::ModbusModel> mModbusModel;
+  std::function<void(int)> mUpdateSelectedModel;
   std::atomic_bool mRefreshUI{};
   int mSelectedRegister;
   int mPreviousSelectedRegister;
