@@ -33,17 +33,33 @@ void ModbusDaemon::runFunction()
   auto modbusConnection = modbus(mConfiguration.mNetworkConfiguration.mModbusTcpAddress, mConfiguration.mNetworkConfiguration.mTCPPort);
   modbusConnection.modbus_set_slave_id(mConfiguration.mNetworkConfiguration.mSlaveId);
   modbusConnection.modbus_connect();
-
+  int selectedModelInView = 0;
   while (mRun.load()) {
-    fillModelCoils(mConfiguration.mRegisterConfiguration.mCoilsStart, mConfiguration.mRegisterConfiguration.mCoilsEnd, modbusConnection);
-    fillIntegerModel(common::RegisterType::InputRegister,
-                     mConfiguration.mRegisterConfiguration.mInputRegistersStart,
-                     mConfiguration.mRegisterConfiguration.mInputRegistersEnd,
-                     modbusConnection);
-    fillIntegerModel(common::RegisterType::HoldingRegister,
-                     mConfiguration.mRegisterConfiguration.mHoldingRegistersStart,
-                     mConfiguration.mRegisterConfiguration.mHoldingRegistersEnd,
-                     modbusConnection);
+    selectedModelInView = mViewController->getCurrentModelView();
+
+    switch (selectedModelInView) {
+    case 0:
+      fillModelCoils(mConfiguration.mRegisterConfiguration.mCoilsStart, mConfiguration.mRegisterConfiguration.mCoilsEnd, modbusConnection);
+      break;
+    case 1:
+      fillIntegerModel(common::RegisterType::InputStatus,
+                       mConfiguration.mRegisterConfiguration.mInputStatusStart,
+                       mConfiguration.mRegisterConfiguration.mInputStatusEnd,
+                       modbusConnection);
+      break;
+    case 2:
+      fillIntegerModel(common::RegisterType::InputRegister,
+                       mConfiguration.mRegisterConfiguration.mInputRegistersStart,
+                       mConfiguration.mRegisterConfiguration.mInputRegistersEnd,
+                       modbusConnection);
+      break;
+    case 3:
+      fillIntegerModel(common::RegisterType::HoldingRegister,
+                       mConfiguration.mRegisterConfiguration.mHoldingRegistersStart,
+                       mConfiguration.mRegisterConfiguration.mHoldingRegistersEnd,
+                       modbusConnection);
+      break;
+    }
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(0.1s);
   }
@@ -67,6 +83,7 @@ void ModbusDaemon::fillIntegerModel(common::RegisterType type, unsigned int star
     switch (type) {
     case common::RegisterType::HoldingRegister: modbusConnection.modbus_read_holding_registers(i, 1, &readReg); break;
     case common::RegisterType::InputRegister: modbusConnection.modbus_read_input_registers(i, 1, &readReg); break;
+    default: return;
     }
     dataPair reg(i, std::to_string(readReg));
     mViewController->updateModel(type, reg);
