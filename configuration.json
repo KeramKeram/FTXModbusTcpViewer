@@ -13,6 +13,6 @@
   "network-configuration": {
     "ip-address": "127.0.0.1",
     "port": 5020,
-    "slave-id": 1
+    "slave-id": 0
   }
 }
