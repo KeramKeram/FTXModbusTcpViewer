@@ -34,7 +34,19 @@ void ModbusDaemon::runFunction()
   modbusConnection.modbus_set_slave_id(mConfiguration.mNetworkConfiguration.mSlaveId);
   modbusConnection.modbus_connect();
 
-  while (mRun.load()) { bool read_coil; }
+  while (mRun.load()) {
+    fillModelCoils(mConfiguration.mRegisterConfiguration.mCoilsStart, mConfiguration.mRegisterConfiguration.mCoilsEnd, modbusConnection);
+
+    fillModelCoils(common::RegisterType::InputRegister,
+                   mConfiguration.mRegisterConfiguration.mInputRegistersStart,
+                   mConfiguration.mRegisterConfiguration.mInputRegistersEnd,
+                   modbusConnection);
+
+    fillModelCoils(common::RegisterType::HoldingRegister,
+                   mConfiguration.mRegisterConfiguration.mInputRegistersStart,
+                   mConfiguration.mRegisterConfiguration.mInputRegistersEnd,
+                   modbusConnection);
+  }
 }
 
 void ModbusDaemon::fillModelCoils(unsigned int start, unsigned int stop, modbus &modbusConnection)
