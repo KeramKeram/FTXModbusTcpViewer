@@ -1,8 +1,6 @@
 #include "MainView.h"
 #include <string>
-#include <thread>
 #include <vector>
-#include <iostream>
 #include "TableCreator.h"
 
 #include "ftxui/component/component.hpp"
@@ -13,8 +11,18 @@ namespace views {
 using namespace ftxui;
 
 MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel)
-  : mModbusModel(mModbusModel), mSelectedRegister(0), mPreviousSelectedRegister(0), mUpdateSelectedModel(updateselectedModel)
+  : mModbusModel(mModbusModel)
+  , mSelectedRegister(0)
+  , mPreviousSelectedRegister(0)
+  , mUpdateSelectedModel(updateselectedModel)
+  , mStopInternalThreads(false)
 {
+}
+
+MainView::~MainView()
+{
+  mStopInternalThreads.store(true);
+  if (mRefreshThread.joinable()) { mRefreshThread.join(); }
 }
 
 void MainView::show()
@@ -39,10 +47,9 @@ void MainView::show()
   auto buttonQ       = Button("Quit", screen.ExitLoopClosure());
   Component renderer = createRenderer(focus_x, focus_y, slider_x, slider_y, radiobox, buttonQ);
 
+  mStopInternalThreads.store(false);
   std::thread refresh_ui([&, this] {
-    while (true) {
-      using namespace std::chrono_literals;
-      std::this_thread::sleep_for(0.5s);
+    while (!mStopInternalThreads) {
       if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
         mPreviousSelectedRegister = mSelectedRegister;
         mUpdateSelectedModel(mSelectedRegister);
@@ -52,6 +59,8 @@ void MainView::show()
       }
     }
   });
+
+  mRefreshThread = std::move(refresh_ui);
 
   screen.Loop(renderer);
 }
