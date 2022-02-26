@@ -38,7 +38,7 @@ void MainView::show()
   auto screen        = ScreenInteractive::Fullscreen();
   auto buttonQ       = Button("Quit", screen.ExitLoopClosure());
   Component renderer = createRenderer(focus_x, focus_y, slider_x, slider_y, radiobox, buttonQ);
-  /*std::thread refresh_ui([&, this] {
+  std::thread refresh_ui([&, this] {
     while (true) {
       using namespace std::chrono_literals;
       std::this_thread::sleep_for(0.5s);
@@ -49,7 +49,7 @@ void MainView::show()
         screen.PostEvent(Event::Custom);
       }
     }
-  });*/
+  });
 
   screen.Loop(renderer);
 }
@@ -65,6 +65,7 @@ Element MainView::makeGrid(int registersType)
   default:
     break;
   }
+  vals = mModbusModel->getAllValuesForCoils();
   TableCreator factory;
   auto output = factory.createTable(vals);
   return gridbox(output);
