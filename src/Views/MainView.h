@@ -3,7 +3,7 @@
 
 #include <functional>
 #include <memory>
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 #include <thread>
 #include <utility>
@@ -24,7 +24,7 @@ class MainView : public IView
 public:
   MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel);
 
-  virtual ~MainView();
+  ~MainView() override;
 
   void show() override;
 
