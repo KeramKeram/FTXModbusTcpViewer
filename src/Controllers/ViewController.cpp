@@ -1,10 +1,10 @@
 #include "ViewController.h"
-
+#include <iostream>
 namespace controllers {
 ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView)
   : mModbusModel(mModbusModel), mMainView(mMainView)
 {
-  mModbusModel->setUpdateCallback([&mMainView]() { mMainView->updateView(); });
+  mModbusModel->setUpdateCallback([this]() { updateView(); });
 }
 
 void ViewController::showView()
