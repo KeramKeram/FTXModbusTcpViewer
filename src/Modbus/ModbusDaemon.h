@@ -32,11 +32,15 @@ public:
   void stopThread();
 
 private:
+  enum class RegisterTypeBool { Coils, InputStatus };
+
+  enum class RegisterTypeInt { InputRegister, HoldingRegister };
+
   void runFunction();
 
-  void fillModelCoils(unsigned int start, unsigned int stop, modbus &modbusConnection);
+  void fillBoolModel(RegisterTypeBool type, unsigned int start, unsigned int stop, modbus &modbusConnection);
 
-  void fillIntegerModel(common::RegisterType type, unsigned int start, unsigned int stop, modbus &modbusConnection);
+  void fillIntegerModel(RegisterTypeInt type, unsigned int start, unsigned int stop, modbus &modbusConnection);
 
   std::shared_ptr<controllers::ViewController> mViewController;
   configuration::Configuration mConfiguration;

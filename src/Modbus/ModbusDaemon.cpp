@@ -39,22 +39,25 @@ void ModbusDaemon::runFunction()
 
     switch (selectedModelInView) {
     case 0:
-      fillModelCoils(mConfiguration.mRegisterConfiguration.mCoilsStart, mConfiguration.mRegisterConfiguration.mCoilsEnd, modbusConnection);
+      fillBoolModel(RegisterTypeBool::Coils,
+                    mConfiguration.mRegisterConfiguration.mCoilsStart,
+                    mConfiguration.mRegisterConfiguration.mCoilsEnd,
+                    modbusConnection);
       break;
     case 1:
-      fillIntegerModel(common::RegisterType::InputStatus,
+      fillBoolModel(RegisterTypeBool::InputStatus,
                        mConfiguration.mRegisterConfiguration.mInputStatusStart,
                        mConfiguration.mRegisterConfiguration.mInputStatusEnd,
                        modbusConnection);
       break;
     case 2:
-      fillIntegerModel(common::RegisterType::InputRegister,
+      fillIntegerModel(RegisterTypeInt::InputRegister,
                        mConfiguration.mRegisterConfiguration.mInputRegistersStart,
                        mConfiguration.mRegisterConfiguration.mInputRegistersEnd,
                        modbusConnection);
       break;
     case 3:
-      fillIntegerModel(common::RegisterType::HoldingRegister,
+      fillIntegerModel(RegisterTypeInt::HoldingRegister,
                        mConfiguration.mRegisterConfiguration.mHoldingRegistersStart,
                        mConfiguration.mRegisterConfiguration.mHoldingRegistersEnd,
                        modbusConnection);
@@ -65,28 +68,35 @@ void ModbusDaemon::runFunction()
   }
 }
 
-void ModbusDaemon::fillModelCoils(unsigned int start, unsigned int stop, modbus &modbusConnection)
+void ModbusDaemon::fillBoolModel(RegisterTypeBool type, unsigned int start, unsigned int stop, modbus &modbusConnection)
 {
   bool readReg = false;
-  for (unsigned int i = start; i < stop; i++) {
-    modbusConnection.modbus_read_coils(i, 1, &readReg);
-    dataPair reg(i, std::to_string(readReg));
-    mViewController->updateModel(common::RegisterType::Coils, reg);
-  }
-}
-
-void ModbusDaemon::fillIntegerModel(common::RegisterType type, unsigned int start, unsigned int stop, modbus &modbusConnection)
-{
-  if (type == common::RegisterType::Coils || type == common::RegisterType::InputStatus) { return; }
-  uint16_t readReg = 0;
+  //TODO: Move from for loop to reding multiple regs from API.
   for (unsigned int i = start; i < stop; i++) {
     switch (type) {
-    case common::RegisterType::HoldingRegister: modbusConnection.modbus_read_holding_registers(i, 1, &readReg); break;
-    case common::RegisterType::InputRegister: modbusConnection.modbus_read_input_registers(i, 1, &readReg); break;
+    case RegisterTypeBool::Coils: modbusConnection.modbus_read_coils(i, 1, &readReg); break;
+    case RegisterTypeBool::InputStatus: modbusConnection.modbus_read_input_bits(i, 1, &readReg); break;
     default: return;
     }
     dataPair reg(i, std::to_string(readReg));
-    mViewController->updateModel(type, reg);
+    auto outputType = type == RegisterTypeBool::Coils?common::RegisterType::Coils:common::RegisterType::InputStatus;
+    mViewController->updateModel(outputType, reg);
+  }
+}
+
+void ModbusDaemon::fillIntegerModel(RegisterTypeInt type, unsigned int start, unsigned int stop, modbus &modbusConnection)
+{
+  uint16_t readReg = 0;
+  //TODO: Move from for loop to reding multiple regs from API.
+  for (unsigned int i = start; i < stop; i++) {
+    switch (type) {
+    case RegisterTypeInt::HoldingRegister: modbusConnection.modbus_read_holding_registers(i, 1, &readReg); break;
+    case RegisterTypeInt::InputRegister: modbusConnection.modbus_read_input_registers(i, 1, &readReg); break;
+    default: return;
+    }
+    dataPair reg(i, std::to_string(readReg));
+    auto outputType = type == RegisterTypeInt::HoldingRegister?common::RegisterType::HoldingRegister:common::RegisterType::InputRegister;
+    mViewController->updateModel(outputType, reg);
   }
 }
 
