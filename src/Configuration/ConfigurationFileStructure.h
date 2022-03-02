@@ -19,4 +19,8 @@ struct NetworkConfiguration {
   unsigned int mTCPPort;
   unsigned int mSlaveId;
 };
+
+struct ViewConfiguration {
+  unsigned int mRowsNumber;
+};
 }  // namespace configuration

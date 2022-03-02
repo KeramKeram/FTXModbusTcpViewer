@@ -31,4 +31,11 @@ configuration::NetworkConfiguration loadJsonConfiguration::getNetworkConfigurati
   return netConfiguration;
 }
 
+configuration::ViewConfiguration loadJsonConfiguration::getViewConfiguration()
+{
+  configuration::ViewConfiguration viewConfiguration;
+  viewConfiguration.mRowsNumber = mValue[VIEW_CONFIGURATION]["rows"].asUInt();
+  return viewConfiguration;
+}
+
 }  // namespace io

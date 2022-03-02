@@ -1,7 +1,7 @@
 {
   "register-interval": {
     "coils-start": 0,
-    "coils-end": 90,
+    "coils-end": 20,
     "input-status-start": 0,
     "input-status-end": 90,
     "input-register-start": 0,
@@ -14,5 +14,9 @@
     "ip-address": "127.0.0.1",
     "port": 5020,
     "slave-id": 0
+  },
+
+  "view-configuration": {
+    "rows": 2
   }
 }
