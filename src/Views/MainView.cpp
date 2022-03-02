@@ -10,9 +10,11 @@
 namespace views {
 using namespace ftxui;
 
-MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel)
+MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel,
+                   configuration::ViewConfiguration &viewConfiguration)
   : mModbusModel(mModbusModel)
   , mUpdateSelectedModel(updateselectedModel)
+  , mViewConfiguration(viewConfiguration)
   , mSelectedRegister(0)
   , mPreviousSelectedRegister(0)
   , mStopInternalThreads(false)
@@ -74,7 +76,7 @@ Element MainView::makeGrid(int registersType)
   case 3: vals = mModbusModel->getAllValuesForHoldingRegisters(); break;
   default: break;
   }
-  TableCreator factory;
+  TableCreator factory(mViewConfiguration);
   auto output = factory.createTable(vals);
   return gridbox(output);
 }

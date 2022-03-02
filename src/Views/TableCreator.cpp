@@ -6,10 +6,14 @@
 namespace views {
 using namespace ftxui;
 
+TableCreator::TableCreator(configuration::ViewConfiguration &mViewConfiguration) : mViewConfiguration(mViewConfiguration)
+{
+}
+
 std::vector<Elements> views::TableCreator::createTable(std::vector<std::string> &vals)
 {
   std::vector<Elements> rows;
-  int partsInRow = static_cast<int>(vals.size() / 10) + 1;
+  int partsInRow = static_cast<int>(vals.size() / VIEW_ROWS) + 1;
   if (vals.size() % 10 != 0) { ++partsInRow; }
   auto firstRow = createFirstRow(partsInRow);
   rows.push_back(firstRow);
@@ -58,5 +62,4 @@ Element TableCreator::makeBox(const TableCreator::BoxParameter &param)
   return text(value) | center | size(WIDTH, EQUAL, VIEW_BOX_WIDTH) | size(HEIGHT, EQUAL, VIEW_BOX_HEIGHT) | border
          | bgcolor(Color::HSV(hue, saturation, hvValue));
 }
-
 }  // namespace views

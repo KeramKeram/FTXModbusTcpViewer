@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "Configuration.h"
 #include "ModbusModel.h"
 #include "ftxui/component/captured_mouse.hpp"
 #include "ftxui/component/component.hpp"
@@ -22,7 +23,8 @@ using namespace ftxui;
 class MainView : public IView
 {
 public:
-  MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel);
+  MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel,
+           configuration::ViewConfiguration &viewConfiguration);
 
   ~MainView() override;
 
@@ -41,6 +43,7 @@ private:
 
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::function<void(int)> mUpdateSelectedModel;
+  configuration::ViewConfiguration& mViewConfiguration;
   std::atomic_bool mRefreshUI{};
   int mSelectedRegister;
   int mPreviousSelectedRegister;

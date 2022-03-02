@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Configuration.h"
+
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/dom/elements.hpp"
@@ -8,13 +10,14 @@
 namespace views {
 using namespace ftxui;
 constexpr int VIEW_COLUMNS    = 2;
-constexpr int VIEW_ROWS       = 10;
+constexpr int VIEW_ROWS       = 2;
 constexpr int VIEW_BOX_WIDTH  = 8;
 constexpr int VIEW_BOX_HEIGHT = 3;
 
 class TableCreator
 {
 public:
+  TableCreator(configuration::ViewConfiguration &mViewConfiguration);
   std::vector<ftxui::Elements> createTable(std::vector<std::string> &vals);
 
 private:
@@ -33,6 +36,8 @@ private:
   static ftxui::Element makeBox(const BoxParameter &param);
   static std::vector<Element> createFirstRow(int partsInRow);
   static void populateTable(const std::vector<std::string> &vals, std::vector<Elements> &rows, int partsInRow);
+
+  configuration::ViewConfiguration& mViewConfiguration;
 };
 
 }  // namespace views
