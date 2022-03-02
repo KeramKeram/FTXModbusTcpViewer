@@ -16,6 +16,8 @@ MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std:
   , mSelectedRegister(0)
   , mPreviousSelectedRegister(0)
   , mStopInternalThreads(false)
+  , mFocusX(0)
+  , mFocusY(0)
 {
 }
 
@@ -27,11 +29,8 @@ MainView::~MainView()
 
 void MainView::show()
 {
-  float focus_x = 0.0f;
-  float focus_y = 0.0f;
-
-  auto slider_x                          = Slider("x", &focus_x, 0.f, 1.f, 0.01f);
-  auto slider_y                          = Slider("y", &focus_y, 0.f, 1.f, 0.01f);
+  auto slider_x                          = Slider("x", &mFocusX, 0.f, 1.f, 0.01f);
+  auto slider_y                          = Slider("y", &mFocusY, 0.f, 1.f, 0.01f);
   std::vector<std::string> radiobox_list = {
     "Coils",
     "Input status",
@@ -45,7 +44,7 @@ void MainView::show()
 
   auto screen        = ScreenInteractive::Fullscreen();
   auto buttonQ       = Button("Quit", screen.ExitLoopClosure());
-  Component renderer = createRenderer(focus_x, focus_y, slider_x, slider_y, radiobox, buttonQ);
+  Component renderer = createRenderer(slider_x, slider_y, radiobox, buttonQ);
 
   mStopInternalThreads.store(false);
   std::thread refresh_ui([&, this] {
@@ -80,22 +79,20 @@ Element MainView::makeGrid(int registersType)
   return gridbox(output);
 }
 
-Component MainView::createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton)
+Component MainView::createRenderer(Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton)
 {
   auto renderer = Renderer(Container::Vertical({ radiobox, slider_x, slider_y, qButton }), [&, this] {
     auto title = "focusPositionRelative(" +        //
-                 std::to_string(focus_x) + ", " +  //
-                 std::to_string(focus_y) + ")";    //
-    return vbox({
-             text(title),
-             separator(),
-             radiobox->Render(),
-             slider_x->Render(),
-             slider_y->Render(),
-             qButton->Render(),
-             separator(),
-             mGrid | focusPositionRelative(focus_x, focus_y) | frame | flex,
-           })
+                 std::to_string(mFocusX) + ", " +  //
+                 std::to_string(mFocusY) + ")";    //
+    return vbox({ text(title),
+                  separator(),
+                  radiobox->Render(),
+                  slider_x->Render(),
+                  slider_y->Render(),
+                  qButton->Render(),
+                  separator(),
+                  mGrid | focusPositionRelative(mFocusX, mFocusY) | frame | flex })
            | border;
   });
   return renderer;

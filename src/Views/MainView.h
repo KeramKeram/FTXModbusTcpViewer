@@ -37,7 +37,7 @@ public:
 
 private:
   Element makeGrid(int registersType);
-  Component createRenderer(float focus_x, float focus_y, Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton);
+  Component createRenderer(Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton);
 
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::function<void(int)> mUpdateSelectedModel;
@@ -46,5 +46,7 @@ private:
   int mPreviousSelectedRegister;
   std::thread mRefreshThread;
   std::atomic<bool> mStopInternalThreads;
+  float mFocusX;
+  float mFocusY;
 };
 }  // namespace views
