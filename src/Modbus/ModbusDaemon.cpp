@@ -71,7 +71,6 @@ void ModbusDaemon::runFunction()
 void ModbusDaemon::fillBoolModel(RegisterTypeBool type, unsigned int start, unsigned int stop, modbus &modbusConnection)
 {
   bool readReg = false;
-  //TODO: Move from for loop to reding multiple regs from API.
   for (unsigned int i = start; i < stop; i++) {
     switch (type) {
     case RegisterTypeBool::Coils: modbusConnection.modbus_read_coils(i, 1, &readReg); break;
@@ -87,7 +86,6 @@ void ModbusDaemon::fillBoolModel(RegisterTypeBool type, unsigned int start, unsi
 void ModbusDaemon::fillIntegerModel(RegisterTypeInt type, unsigned int start, unsigned int stop, modbus &modbusConnection)
 {
   uint16_t readReg = 0;
-  //TODO: Move from for loop to reding multiple regs from API.
   for (unsigned int i = start; i < stop; i++) {
     switch (type) {
     case RegisterTypeInt::HoldingRegister: modbusConnection.modbus_read_holding_registers(i, 1, &readReg); break;
