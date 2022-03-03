@@ -8,7 +8,7 @@
 #include "loadJsonConfiguration.h"
 int main()
 {
-  io::loadJsonConfiguration conf("");
+  io::loadJsonConfiguration conf("configuration.json");
   configuration::Configuration configuration;
   configuration.mRegisterConfiguration = conf.getRegisterConfiguration();
   configuration.mNetworkConfiguration  = conf.getNetworkConfiguration();
