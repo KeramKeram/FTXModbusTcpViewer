@@ -22,9 +22,9 @@ public:
 
   unsigned int getCurrentModelView();
 
-private:
   void updateView();
 
+private:
   void updateSelectedModel(int selected);
 
   std::shared_ptr<model::ModbusModel> mModbusModel;

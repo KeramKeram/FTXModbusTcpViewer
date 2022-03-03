@@ -63,6 +63,9 @@ void ModbusDaemon::runFunction()
                        modbusConnection);
       break;
     }
+    /* It's better to update view from here than update it on every change in model */
+    //TODO: Improve thread communication with using notify.
+    mViewController->updateView();
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(0.1s);
   }

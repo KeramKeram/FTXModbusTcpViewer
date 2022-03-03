@@ -58,6 +58,8 @@ void MainView::show()
         mGrid = makeGrid(mSelectedRegister);
         screen.PostEvent(Event::Custom);
       }
+      using namespace std::chrono_literals;
+      std::this_thread::sleep_for(0.1s);
     }
   });
 
