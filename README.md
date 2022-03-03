@@ -1,6 +1,6 @@
 # FTXModbusTcpViewer
-Very easy viewer for modbus. <b> PROGRAM WAS TESTED USING PYMODUS. NO WARRANTY IS WORK WITH OTHER SOFTWARE</b>.
-Program is still in active development, but is currently is able to read register from modbus server and show them on screen.
+Very easy viewer for modbus. <b> PROGRAM WAS TESTED USING PYMODUS. NO WARRANTY IS WORKING WITH OTHER SOFTWARE</b>.
+Program is still in active development, but currently is able to read register from modbus server and show them on screen.
 
 # Build
 Build tested only on Linux.
