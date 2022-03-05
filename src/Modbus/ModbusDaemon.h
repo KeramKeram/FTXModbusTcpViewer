@@ -5,7 +5,6 @@
 #include <condition_variable>
 #include <iostream>
 #include <memory>
-#include <mutex>
 #include <queue>
 #include <random>
 #include <thread>
@@ -13,15 +12,11 @@
 #include <functional>
 
 #include "Configuration.h"
-#include "RegisterType.h"
 #include "ViewController.h"
-#include "modbus.h"
 
 namespace Modbus {
 class ModbusDaemon
 {
-  using dataPair = std::pair<unsigned int, std::string>;
-
 public:
   ModbusDaemon(const std::shared_ptr<controllers::ViewController> &mViewController, const configuration::Configuration &mConfiguration);
 
@@ -32,20 +27,11 @@ public:
   void stopThread();
 
 private:
-  enum class RegisterTypeBool { Coils, InputStatus };
-
-  enum class RegisterTypeInt { InputRegister, HoldingRegister };
-
   void runFunction();
-
-  void fillBoolModel(RegisterTypeBool type, unsigned int start, unsigned int stop, modbus &modbusConnection);
-
-  void fillIntegerModel(RegisterTypeInt type, unsigned int start, unsigned int stop, modbus &modbusConnection);
 
   std::shared_ptr<controllers::ViewController> mViewController;
   configuration::Configuration mConfiguration;
   std::thread mThread;
   std::atomic_bool mRun;
-  std::mutex mMutex;
 };
 }  // namespace Modbus

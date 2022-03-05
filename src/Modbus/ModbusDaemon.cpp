@@ -1,7 +1,8 @@
 #include "ModbusDaemon.h"
 
 #include "Configuration.h"
-#include "RegisterType.h"
+#include "modbus.h"
+#include "FillModel.h"
 
 namespace Modbus {
 
@@ -34,70 +35,30 @@ void ModbusDaemon::runFunction()
   modbusConnection.modbus_set_slave_id(mConfiguration.mNetworkConfiguration.mSlaveId);
   modbusConnection.modbus_connect();
   int selectedModelInView = 0;
+  FillModel modelFiller(mViewController, modbusConnection);
   while (mRun.load()) {
     selectedModelInView = mViewController->getCurrentModelView();
 
     switch (selectedModelInView) {
-    case 0:
-      fillBoolModel(RegisterTypeBool::Coils,
-                    mConfiguration.mRegisterConfiguration.mCoilsStart,
-                    mConfiguration.mRegisterConfiguration.mCoilsEnd,
-                    modbusConnection);
-      break;
+    case 0: modelFiller.fillCoilsModel(mConfiguration.mRegisterConfiguration.mCoilsStart, mConfiguration.mRegisterConfiguration.mCoilsEnd); break;
     case 1:
-      fillBoolModel(RegisterTypeBool::InputStatus,
-                       mConfiguration.mRegisterConfiguration.mInputStatusStart,
-                       mConfiguration.mRegisterConfiguration.mInputStatusEnd,
-                       modbusConnection);
+      modelFiller.fillInputStatusModel(mConfiguration.mRegisterConfiguration.mInputStatusStart,
+                                       mConfiguration.mRegisterConfiguration.mInputStatusEnd);
       break;
     case 2:
-      fillIntegerModel(RegisterTypeInt::InputRegister,
-                       mConfiguration.mRegisterConfiguration.mInputRegistersStart,
-                       mConfiguration.mRegisterConfiguration.mInputRegistersEnd,
-                       modbusConnection);
+      modelFiller.FillInputRegisterModel(mConfiguration.mRegisterConfiguration.mInputRegistersStart,
+                                         mConfiguration.mRegisterConfiguration.mInputRegistersEnd);
       break;
     case 3:
-      fillIntegerModel(RegisterTypeInt::HoldingRegister,
-                       mConfiguration.mRegisterConfiguration.mHoldingRegistersStart,
-                       mConfiguration.mRegisterConfiguration.mHoldingRegistersEnd,
-                       modbusConnection);
+      modelFiller.FillHoldingRegisterModel(mConfiguration.mRegisterConfiguration.mHoldingRegistersStart,
+                                           mConfiguration.mRegisterConfiguration.mHoldingRegistersEnd);
       break;
     }
     /* It's better to update view from here than update it on every change in model */
-    //TODO: Improve thread communication with using notify.
+    // TODO: Improve thread communication with using notify.
     mViewController->updateView();
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(0.1s);
-  }
-}
-
-void ModbusDaemon::fillBoolModel(RegisterTypeBool type, unsigned int start, unsigned int stop, modbus &modbusConnection)
-{
-  bool readReg = false;
-  for (unsigned int i = start; i < stop; i++) {
-    switch (type) {
-    case RegisterTypeBool::Coils: modbusConnection.modbus_read_coils(i, 1, &readReg); break;
-    case RegisterTypeBool::InputStatus: modbusConnection.modbus_read_input_bits(i, 1, &readReg); break;
-    default: return;
-    }
-    dataPair reg(i, std::to_string(readReg));
-    auto outputType = type == RegisterTypeBool::Coils?common::RegisterType::Coils:common::RegisterType::InputStatus;
-    mViewController->updateModel(outputType, reg);
-  }
-}
-
-void ModbusDaemon::fillIntegerModel(RegisterTypeInt type, unsigned int start, unsigned int stop, modbus &modbusConnection)
-{
-  uint16_t readReg = 0;
-  for (unsigned int i = start; i < stop; i++) {
-    switch (type) {
-    case RegisterTypeInt::HoldingRegister: modbusConnection.modbus_read_holding_registers(i, 1, &readReg); break;
-    case RegisterTypeInt::InputRegister: modbusConnection.modbus_read_input_registers(i, 1, &readReg); break;
-    default: return;
-    }
-    dataPair reg(i, std::to_string(readReg));
-    auto outputType = type == RegisterTypeInt::HoldingRegister?common::RegisterType::HoldingRegister:common::RegisterType::InputRegister;
-    mViewController->updateModel(outputType, reg);
   }
 }
 
