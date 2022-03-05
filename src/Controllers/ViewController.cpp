@@ -2,7 +2,7 @@
 
 namespace controllers {
 ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView)
-  : mModbusModel(mModbusModel), mMainView(mMainView)
+  : mModbusModel(mModbusModel), mMainView(mMainView), mSelectedModel(0)
 {
   mMainView->setSelectedModel([this](int x) {updateSelectedModel(x);});
 }

@@ -6,14 +6,14 @@
 namespace views {
 using namespace ftxui;
 
-TableCreator::TableCreator(configuration::ViewConfiguration &mViewConfiguration) : mViewConfiguration(mViewConfiguration)
+TableCreator::TableCreator(configuration::ViewConfiguration &viewConfiguration) : mViewConfiguration(viewConfiguration)
 {
 }
 
 std::vector<Elements> views::TableCreator::createTable(std::vector<std::string> &vals)
 {
   std::vector<Elements> rows;
-  int partsInRow = static_cast<int>(vals.size() / VIEW_ROWS) + 1;
+  int partsInRow = static_cast<int>(vals.size() / mViewConfiguration.mRowsNumber) + 1;
   if (vals.size() % 10 != 0) { ++partsInRow; }
   auto firstRow = createFirstRow(partsInRow);
   rows.push_back(firstRow);
@@ -24,7 +24,7 @@ void views::TableCreator::populateTable(const std::vector<std::string> &vals, st
 {
   size_t counter = 0;
   std::string value;
-  for (int x = 0; x < VIEW_ROWS; ++x) {
+  for (int x = 0; x < mViewConfiguration.mRowsNumber; ++x) {
     std::vector<Element> row;
     for (int j = 0; j < partsInRow; ++j) {
       if (counter >= vals.size()) { break; }

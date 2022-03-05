@@ -12,7 +12,7 @@ using namespace ftxui;
 
 MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel,
                    configuration::ViewConfiguration &viewConfiguration)
-  : mModbusModel(mModbusModel), mUpdateSelectedModel(updateselectedModel), mViewConfiguration(viewConfiguration), mStopInternalThreads(false)
+  : mModbusModel(mModbusModel), mUpdateSelectedModel(std::move(updateselectedModel)), mViewConfiguration(viewConfiguration), mStopInternalThreads(false)
 {
 }
 

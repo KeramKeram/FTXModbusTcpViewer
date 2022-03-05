@@ -9,7 +9,6 @@
 
 namespace views {
 using namespace ftxui;
-constexpr int VIEW_COLUMNS    = 2;
 constexpr int VIEW_ROWS       = 2;
 constexpr int VIEW_BOX_WIDTH  = 8;
 constexpr int VIEW_BOX_HEIGHT = 3;
@@ -17,7 +16,7 @@ constexpr int VIEW_BOX_HEIGHT = 3;
 class TableCreator
 {
 public:
-  TableCreator(configuration::ViewConfiguration &mViewConfiguration);
+  explicit TableCreator(configuration::ViewConfiguration &viewConfiguration);
   std::vector<ftxui::Elements> createTable(std::vector<std::string> &vals);
 
 private:
@@ -34,8 +33,8 @@ private:
 
   static TableCreator::BoxParameter createBoxParameters(std::string value, int hue, int hsv);
   static ftxui::Element makeBox(const BoxParameter &param);
-  static std::vector<Element> createFirstRow(int partsInRow);
-  static void populateTable(const std::vector<std::string> &vals, std::vector<Elements> &rows, int partsInRow);
+  std::vector<Element> createFirstRow(int partsInRow);
+  void populateTable(const std::vector<std::string> &vals, std::vector<Elements> &rows, int partsInRow);
 
   configuration::ViewConfiguration& mViewConfiguration;
 };

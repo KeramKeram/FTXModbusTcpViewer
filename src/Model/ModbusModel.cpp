@@ -1,5 +1,7 @@
 #include "ModbusModel.h"
 
+#include <utility>
+
 namespace model {
 
 ModbusModel::ModbusModel(std::function<void()> update)
@@ -7,7 +9,7 @@ ModbusModel::ModbusModel(std::function<void()> update)
   , mInputStatus(std::make_unique<safeMap>())
   , mInputRegisters(std::make_unique<safeMap>())
   , mHoldingRegisters(std::make_unique<safeMap>())
-  , mModelsUpdatedCallback(update)
+  , mModelsUpdatedCallback(std::move(update))
 {
 }
 

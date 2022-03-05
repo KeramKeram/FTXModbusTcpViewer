@@ -1,8 +1,8 @@
 #include "ModbusDaemon.h"
 
 #include "Configuration.h"
-#include "modbus.h"
 #include "FillModel.h"
+#include "modbus.h"
 
 namespace Modbus {
 
@@ -10,7 +10,6 @@ ModbusDaemon::ModbusDaemon(const std::shared_ptr<controllers::ViewController> &m
   : mViewController(mViewController), mConfiguration(mConfiguration)
 {
 }
-
 
 ModbusDaemon::~ModbusDaemon()
 {
@@ -33,7 +32,10 @@ void ModbusDaemon::runFunction()
   mRun.store(true);
   auto modbusConnection = modbus(mConfiguration.mNetworkConfiguration.mModbusTcpAddress, mConfiguration.mNetworkConfiguration.mTCPPort);
   modbusConnection.modbus_set_slave_id(mConfiguration.mNetworkConfiguration.mSlaveId);
-  modbusConnection.modbus_connect();
+  auto status = modbusConnection.modbus_connect();
+  if (!status) {
+    return;
+  }
   int selectedModelInView = 0;
   FillModel modelFiller(mViewController, modbusConnection);
   while (mRun.load()) {
