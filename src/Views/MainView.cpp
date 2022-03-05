@@ -12,14 +12,7 @@ using namespace ftxui;
 
 MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel,
                    configuration::ViewConfiguration &viewConfiguration)
-  : mModbusModel(mModbusModel)
-  , mUpdateSelectedModel(updateselectedModel)
-  , mViewConfiguration(viewConfiguration)
-  , mSelectedRegister(0)
-  , mPreviousSelectedRegister(0)
-  , mStopInternalThreads(false)
-  , mFocusX(0)
-  , mFocusY(0)
+  : mModbusModel(mModbusModel), mUpdateSelectedModel(updateselectedModel), mViewConfiguration(viewConfiguration), mStopInternalThreads(false)
 {
 }
 
@@ -31,18 +24,18 @@ MainView::~MainView()
 
 void MainView::show()
 {
-  auto slider_x                          = Slider("x", &mFocusX, 0.f, 1.f, 0.01f);
-  auto slider_y                          = Slider("y", &mFocusY, 0.f, 1.f, 0.01f);
+  auto slider_x                          = Slider("x", &mUiElements.mFocusX, 0.f, 1.f, 0.01f);
+  auto slider_y                          = Slider("y", &mUiElements.mFocusY, 0.f, 1.f, 0.01f);
   std::vector<std::string> radiobox_list = {
     "Coils",
     "Input status",
     "Input Register",
     "Holding Register",
   };
-  auto radiobox = Radiobox(&radiobox_list, &mSelectedRegister);
+  auto radiobox = Radiobox(&radiobox_list, &mUiElements.mSelectedRegister);
 
-  mUpdateSelectedModel(mSelectedRegister);
-  mGrid = makeGrid(mSelectedRegister);
+  mUpdateSelectedModel(mUiElements.mSelectedRegister);
+  mGrid = makeGrid(mUiElements.mSelectedRegister);
 
   auto screen        = ScreenInteractive::Fullscreen();
   auto buttonQ       = Button("Quit", screen.ExitLoopClosure());
@@ -51,11 +44,11 @@ void MainView::show()
   mStopInternalThreads.store(false);
   std::thread refresh_ui([&, this] {
     while (!mStopInternalThreads) {
-      if (mRefreshUI.load() || (mPreviousSelectedRegister != mSelectedRegister)) {
-        mPreviousSelectedRegister = mSelectedRegister;
-        mUpdateSelectedModel(mSelectedRegister);
-        mRefreshUI.store(false);
-        mGrid = makeGrid(mSelectedRegister);
+      if (mUiElements.mRefreshUI.load() || (mUiElements.mPreviousSelectedRegister != mUiElements.mSelectedRegister)) {
+        mUiElements.mPreviousSelectedRegister = mUiElements.mSelectedRegister;
+        mUpdateSelectedModel(mUiElements.mSelectedRegister);
+        mUiElements.mRefreshUI.store(false);
+        mGrid = makeGrid(mUiElements.mSelectedRegister);
         screen.PostEvent(Event::Custom);
       }
       using namespace std::chrono_literals;
@@ -86,9 +79,9 @@ Element MainView::makeGrid(int registersType)
 Component MainView::createRenderer(Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton)
 {
   auto renderer = Renderer(Container::Vertical({ radiobox, slider_x, slider_y, qButton }), [&, this] {
-    auto title = "focusPositionRelative(" +        //
-                 std::to_string(mFocusX) + ", " +  //
-                 std::to_string(mFocusY) + ")";    //
+    auto title = "focusPositionRelative(" +                    //
+                 std::to_string(mUiElements.mFocusX) + ", " +  //
+                 std::to_string(mUiElements.mFocusY) + ")";    //
     return vbox({ text(title),
                   separator(),
                   radiobox->Render(),
@@ -96,7 +89,7 @@ Component MainView::createRenderer(Component &slider_x, Component &slider_y, Com
                   slider_y->Render(),
                   qButton->Render(),
                   separator(),
-                  mGrid | focusPositionRelative(mFocusX, mFocusY) | frame | flex })
+                  mGrid | focusPositionRelative(mUiElements.mFocusX, mUiElements.mFocusY) | frame | flex })
            | border;
   });
   return renderer;
@@ -104,7 +97,7 @@ Component MainView::createRenderer(Component &slider_x, Component &slider_y, Com
 
 void MainView::updateView()
 {
-  mRefreshUI.store(true);
+  mUiElements.mRefreshUI.store(true);
 }
 
 void MainView::setSelectedModel(std::function<void(int)> func)

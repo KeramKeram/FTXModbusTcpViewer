@@ -38,18 +38,24 @@ public:
   void setSelectedModel(std::function<void(int)> func) override;
 
 private:
+  struct UiInternalElements
+  {
+    std::atomic_bool mRefreshUI{};
+    int mSelectedRegister{ 0 };
+    int mPreviousSelectedRegister{ 0 };
+    float mFocusX{ 0 };
+    float mFocusY{ 0 };
+  };
+
   Element makeGrid(int registersType);
   Component createRenderer(Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton);
 
+
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::function<void(int)> mUpdateSelectedModel;
-  configuration::ViewConfiguration& mViewConfiguration;
-  std::atomic_bool mRefreshUI{};
-  int mSelectedRegister;
-  int mPreviousSelectedRegister;
+  configuration::ViewConfiguration &mViewConfiguration;
   std::thread mRefreshThread;
   std::atomic<bool> mStopInternalThreads;
-  float mFocusX;
-  float mFocusY;
+  UiInternalElements mUiElements;
 };
 }  // namespace views
