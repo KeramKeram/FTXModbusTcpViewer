@@ -3,8 +3,6 @@ set(APP_SHOULD_BE_NICE "OFF" CACHE BOOL "We are nice")
 
 project(ModbusTcpViewerApp LANGUAGES CXX VERSION 1.0.$CACHE{APP_BUILD_VERSION})
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-
 set(APP_NAME FTXModbusTcpViewer)
 
 aux_source_directory(. SRC_FILES)
