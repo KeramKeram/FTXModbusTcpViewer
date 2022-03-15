@@ -52,6 +52,7 @@ private:
     Component mQuitButton;
     Component mInputRegAddress;
     Component mInputRegValue;
+    Component mSetRegisterButton;
   };
 
   Element makeGrid(int registersType);

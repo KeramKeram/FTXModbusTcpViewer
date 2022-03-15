@@ -44,6 +44,7 @@ void MainView::show()
   mUiElements.mQuitButton                               = Button("Quit", screen.ExitLoopClosure());
   mUiElements.mInputRegAddress                          = Input(&mUiElements.mRegisterAddress, "0");
   mUiElements.mInputRegValue                            = Input(&mUiElements.mRegisterValue, "0");
+  mUiElements.mSetRegisterButton                               = Button("Set Reg.", [this] { });
   Component renderer                                    = createRenderer();
 
   mStopInternalThreads.store(false);
@@ -100,6 +101,7 @@ Component MainView::createRenderer()
                                            mUiElements.mSliderY->Render(),
                                            hbox(text(" Reg. Address : "), mUiElements.mInputRegAddress->Render()),
                                            hbox(text(" Reg. Value : "), mUiElements.mInputRegValue->Render()),
+                                           mUiElements.mSetRegisterButton->Render(),
                                            mUiElements.mQuitButton->Render(),
                                            separator(),
                                            mGrid | focusPositionRelative(mUiElements.mFocusX, mUiElements.mFocusY) | frame | flex })
