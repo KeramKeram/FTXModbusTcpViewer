@@ -12,7 +12,10 @@ using namespace ftxui;
 
 MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel,
                    configuration::ViewConfiguration &viewConfiguration)
-  : mModbusModel(mModbusModel), mUpdateSelectedModel(std::move(updateselectedModel)), mViewConfiguration(viewConfiguration), mStopInternalThreads(false)
+  : mModbusModel(mModbusModel)
+  , mUpdateSelectedModel(std::move(updateselectedModel))
+  , mViewConfiguration(viewConfiguration)
+  , mStopInternalThreads(false)
 {
 }
 
@@ -24,22 +27,24 @@ MainView::~MainView()
 
 void MainView::show()
 {
-  auto slider_x                          = Slider("x", &mUiElements.mFocusX, 0.f, 1.f, 0.01f);
-  auto slider_y                          = Slider("y", &mUiElements.mFocusY, 0.f, 1.f, 0.01f);
+  mUiElements.mSliderX                   = Slider("x", &mUiElements.mFocusX, 0.f, 1.f, 0.01f);
+  mUiElements.mSliderY                   = Slider("y", &mUiElements.mFocusY, 0.f, 1.f, 0.01f);
   std::vector<std::string> radiobox_list = {
     "Coils",
     "Input status",
     "Input Register",
     "Holding Register",
   };
-  auto radiobox = Radiobox(&radiobox_list, &mUiElements.mSelectedRegister);
+  mUiElements.mRadioBoxReg = Radiobox(&radiobox_list, &mUiElements.mSelectedRegister);
 
   mUpdateSelectedModel(mUiElements.mSelectedRegister);
   mGrid = makeGrid(mUiElements.mSelectedRegister);
 
-  auto screen        = ScreenInteractive::Fullscreen();
-  auto buttonQ       = Button("Quit", screen.ExitLoopClosure());
-  Component renderer = createRenderer(slider_x, slider_y, radiobox, buttonQ);
+  auto screen                                           = ScreenInteractive::Fullscreen();
+  mUiElements.mQuitButton                               = Button("Quit", screen.ExitLoopClosure());
+  mUiElements.mInputRegAddress                          = Input(&mUiElements.mRegisterAddress, "0");
+  mUiElements.mInputRegValue                            = Input(&mUiElements.mRegisterValue, "0");
+  Component renderer                                    = createRenderer();
 
   mStopInternalThreads.store(false);
   std::thread refresh_ui([&, this] {
@@ -76,22 +81,30 @@ Element MainView::makeGrid(int registersType)
   return gridbox(output);
 }
 
-Component MainView::createRenderer(Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton)
+Component MainView::createRenderer()
 {
-  auto renderer = Renderer(Container::Vertical({ radiobox, slider_x, slider_y, qButton }), [&, this] {
-    auto title = "focusPositionRelative(" +                    //
-                 std::to_string(mUiElements.mFocusX) + ", " +  //
-                 std::to_string(mUiElements.mFocusY) + ")";    //
-    return vbox({ text(title),
-                  separator(),
-                  radiobox->Render(),
-                  slider_x->Render(),
-                  slider_y->Render(),
-                  qButton->Render(),
-                  separator(),
-                  mGrid | focusPositionRelative(mUiElements.mFocusX, mUiElements.mFocusY) | frame | flex })
-           | border;
-  });
+  auto renderer = Renderer(Container::Vertical({ mUiElements.mRadioBoxReg,
+                                                 mUiElements.mSliderX,
+                                                 mUiElements.mSliderY,
+                                                 mUiElements.mQuitButton,
+                                                 mUiElements.mInputRegAddress,
+                                                 mUiElements.mInputRegValue }),
+                           [&, this] {
+                             auto title = "focusPositionRelative(" +                    //
+                                          std::to_string(mUiElements.mFocusX) + ", " +  //
+                                          std::to_string(mUiElements.mFocusY) + ")";    //
+                             return vbox({ text(title),
+                                           separator(),
+                                           mUiElements.mRadioBoxReg->Render(),
+                                           mUiElements.mSliderX->Render(),
+                                           mUiElements.mSliderY->Render(),
+                                           hbox(text(" Reg. Address : "), mUiElements.mInputRegAddress->Render()),
+                                           hbox(text(" Reg. Value : "), mUiElements.mInputRegValue->Render()),
+                                           mUiElements.mQuitButton->Render(),
+                                           separator(),
+                                           mGrid | focusPositionRelative(mUiElements.mFocusX, mUiElements.mFocusY) | frame | flex })
+                                    | border;
+                           });
   return renderer;
 }
 

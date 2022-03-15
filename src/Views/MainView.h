@@ -5,6 +5,7 @@
 #include <memory>
 #include <cstdlib>
 #include <string>
+#include <tuple>
 #include <thread>
 #include <utility>
 #include <vector>
@@ -30,9 +31,6 @@ public:
 
   void show() override;
 
-private:
-  Element mGrid;
-
 public:
   void updateView() override;
   void setSelectedModel(std::function<void(int)> func) override;
@@ -45,17 +43,27 @@ private:
     int mPreviousSelectedRegister{ 0 };
     float mFocusX{ 0 };
     float mFocusY{ 0 };
+    std::string mRegisterAddress;
+    std::string mRegisterValue;
+
+    Component mSliderX;
+    Component mSliderY;
+    Component mRadioBoxReg;
+    Component mQuitButton;
+    Component mInputRegAddress;
+    Component mInputRegValue;
   };
 
   Element makeGrid(int registersType);
-  Component createRenderer(Component &slider_x, Component &slider_y, Component &radiobox, Component &qButton);
 
+  Component createRenderer();
 
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::function<void(int)> mUpdateSelectedModel;
   configuration::ViewConfiguration &mViewConfiguration;
   std::thread mRefreshThread;
   std::atomic<bool> mStopInternalThreads;
+  Element mGrid;
   UiInternalElements mUiElements;
 };
 }  // namespace views
