@@ -115,9 +115,4 @@ void MainView::updateView()
   mUiElements.mRefreshUI.store(true);
 }
 
-void MainView::setSelectedModel(std::function<void(int)> func)
-{
-  mControllerCallbacks.mUpdateSelectedModel = std::move(func);
-}
-
 }  // namespace views

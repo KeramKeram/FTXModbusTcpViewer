@@ -35,7 +35,6 @@ public:
 
 public:
   void updateView() override;
-  void setSelectedModel(std::function<void(int)> func) override;
 
 private:
   struct UiInternalElements
