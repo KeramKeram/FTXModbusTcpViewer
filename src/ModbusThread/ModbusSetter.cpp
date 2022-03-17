@@ -1,8 +1,8 @@
 #include "ModbusSetter.h"
 
-#include "modbus.h"
+#include "../ModbusCommon/modbus.h"
 
-namespace Modbus {
+namespace modbusThread {
 bool setHoldingModbus(const configuration::Configuration &modbusConf, uint16_t address, uint16_t value)
 {
   auto modbusConnection = modbus(modbusConf.mNetworkConfiguration.mModbusTcpAddress, modbusConf.mNetworkConfiguration.mTCPPort);

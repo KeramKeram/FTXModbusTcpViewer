@@ -1,6 +1,6 @@
 #include "FillModel.h"
 
-namespace Modbus {
+namespace modbusThread {
 
 FillModel::FillModel(const std::shared_ptr<controllers::ViewController> &mViewController, modbus &mModbusConnection)
   : mViewController(mViewController), mModbusConnection(mModbusConnection)

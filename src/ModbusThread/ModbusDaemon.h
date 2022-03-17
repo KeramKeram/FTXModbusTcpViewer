@@ -14,7 +14,7 @@
 #include "Configuration.h"
 #include "ViewController.h"
 
-namespace Modbus {
+namespace modbusThread {
 class ModbusDaemon
 {
 public:

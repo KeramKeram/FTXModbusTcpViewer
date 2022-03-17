@@ -1,5 +1,5 @@
 
-set(LIB_NAME Modbus)
+set(LIB_NAME ModbusCommon)
 
 aux_source_directory(. SRC_FILES)
 
