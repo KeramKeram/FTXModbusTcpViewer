@@ -1,10 +1,13 @@
 #include "ViewController.h"
 
+#include "ModbusSetter.h"
+
 namespace controllers {
-ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView)
-  : mModbusModel(mModbusModel), mMainView(mMainView), mSelectedModel(0)
+ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView,
+                               const std::shared_ptr<modbusCommon::ModbusWriter> &modbusWrite)
+  : mModbusModel(mModbusModel), mMainView(mMainView), mSelectedModel(0), mModbusWriter(modbusWrite)
 {
-  mMainView->setSelectedModel([this](int x) {updateSelectedModel(x);});
+  mMainView->setSelectedModel([this](int x) { updateSelectedModel(x); });
 }
 
 void ViewController::showView()
@@ -35,5 +38,15 @@ unsigned int ViewController::getCurrentModelView()
 void ViewController::updateSelectedModel(int selected)
 {
   mSelectedModel.store(selected);
+}
+
+void ViewController::setHoldingRegister(uint16_t address, uint16_t value)
+{
+  mModbusWriter->setHoldingModbus(address, value);
+}
+
+void ViewController::setCoilRegister(uint16_t address, bool value)
+{
+  mModbusWriter->setCoilModbus(address, value);
 }
 }  // namespace controllers

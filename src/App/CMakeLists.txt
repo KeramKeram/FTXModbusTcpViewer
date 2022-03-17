@@ -20,6 +20,7 @@ target_link_libraries(${APP_NAME} PRIVATE Views)
 target_link_libraries(${APP_NAME} PRIVATE Controllers)
 target_link_libraries(${APP_NAME} PRIVATE Model)
 target_link_libraries(${APP_NAME} PRIVATE ModbusThread)
+target_link_libraries(${APP_NAME} PRIVATE ModbusCommon)
 target_link_libraries(${APP_NAME} PRIVATE IO)
 target_link_libraries(${APP_NAME} PRIVATE Configuration)
 

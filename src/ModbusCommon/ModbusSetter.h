@@ -1,8 +1,18 @@
 #pragma once
 #include "Configuration.h"
 
-namespace modbusThread {
-bool setModbus(const configuration::Configuration &modbusConf, int address, int value);
+namespace modbusCommon {
+class ModbusWriter
+{
+public:
+  explicit ModbusWriter(const configuration::Configuration &modbusConfiguration);
 
-bool setCoilModbus(const configuration::Configuration &modbusConf, uint16_t address, bool value);
-}  // namespace Modbus
+  bool setHoldingModbus(uint16_t address, uint16_t value);
+
+  bool setCoilModbus(uint16_t address, bool value);
+
+private:
+  const configuration::Configuration &mModbusConfiguration;
+};
+
+}  // namespace modbusCommon
