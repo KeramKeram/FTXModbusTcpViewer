@@ -7,6 +7,7 @@
 #include "MainView.h"
 #include "ModbusModel.h"
 #include "ModbusSetter.h"
+#include "ViewCallbacks.h"
 
 namespace controllers {
 
@@ -14,7 +15,7 @@ class ViewController
 {
 public:
   ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView,
-                 const std::shared_ptr<modbusCommon::ModbusWriter> &modbusWriter);
+                 const std::shared_ptr<modbusCommon::ModbusWriter> &modbusWriter, common::ControllerCallbacks &callbacks);
 
   virtual ~ViewController() = default;
 

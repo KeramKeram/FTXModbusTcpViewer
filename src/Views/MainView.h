@@ -12,6 +12,8 @@
 
 #include "Configuration.h"
 #include "ModbusModel.h"
+#include "ViewCallbacks.h"
+
 #include "ftxui/component/captured_mouse.hpp"
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
@@ -24,7 +26,7 @@ using namespace ftxui;
 class MainView : public IView
 {
 public:
-  MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel,
+  MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, common::ControllerCallbacks &controllerCallbacks,
            configuration::ViewConfiguration &viewConfiguration);
 
   ~MainView() override;
@@ -60,7 +62,7 @@ private:
   Component createRenderer();
 
   std::shared_ptr<model::ModbusModel> mModbusModel;
-  std::function<void(int)> mUpdateSelectedModel;
+  common::ControllerCallbacks &mControllerCallbacks;
   configuration::ViewConfiguration &mViewConfiguration;
   std::thread mRefreshThread;
   std::atomic<bool> mStopInternalThreads;

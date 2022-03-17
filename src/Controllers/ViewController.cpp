@@ -4,10 +4,12 @@
 
 namespace controllers {
 ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView,
-                               const std::shared_ptr<modbusCommon::ModbusWriter> &modbusWrite)
-  : mModbusModel(mModbusModel), mMainView(mMainView), mSelectedModel(0), mModbusWriter(modbusWrite)
+                               const std::shared_ptr<modbusCommon::ModbusWriter> &modbusWriter, common::ControllerCallbacks &callbacks)
+  : mModbusModel(mModbusModel), mMainView(mMainView), mSelectedModel(0), mModbusWriter(modbusWriter)
 {
-  mMainView->setSelectedModel([this](int x) { updateSelectedModel(x); });
+  callbacks.mUpdateSelectedModel = [this](int x) { updateSelectedModel(x); };
+  callbacks.mSetHoldingRegister = [this](uint16_t adr, uint16_t val) { return setHoldingRegister(adr, val); };
+  callbacks.mSetCoilRegister = [this](uint16_t adr, bool val) { return setCoilRegister(adr, val); };
 }
 
 void ViewController::showView()

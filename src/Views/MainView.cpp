@@ -10,10 +10,10 @@
 namespace views {
 using namespace ftxui;
 
-MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, std::function<void(int)> updateselectedModel,
+MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, common::ControllerCallbacks &controllerCallbacks,
                    configuration::ViewConfiguration &viewConfiguration)
   : mModbusModel(mModbusModel)
-  , mUpdateSelectedModel(std::move(updateselectedModel))
+  , mControllerCallbacks(controllerCallbacks)
   , mViewConfiguration(viewConfiguration)
   , mStopInternalThreads(false)
 {
@@ -37,7 +37,7 @@ void MainView::show()
   };
   mUiElements.mRadioBoxReg = Radiobox(&radiobox_list, &mUiElements.mSelectedRegister);
 
-  mUpdateSelectedModel(mUiElements.mSelectedRegister);
+  mControllerCallbacks.mUpdateSelectedModel(mUiElements.mSelectedRegister);
   mGrid = makeGrid(mUiElements.mSelectedRegister);
 
   auto screen                                           = ScreenInteractive::Fullscreen();
@@ -52,7 +52,7 @@ void MainView::show()
     while (!mStopInternalThreads) {
       if (mUiElements.mRefreshUI.load() || (mUiElements.mPreviousSelectedRegister != mUiElements.mSelectedRegister)) {
         mUiElements.mPreviousSelectedRegister = mUiElements.mSelectedRegister;
-        mUpdateSelectedModel(mUiElements.mSelectedRegister);
+        mControllerCallbacks.mUpdateSelectedModel(mUiElements.mSelectedRegister);
         mUiElements.mRefreshUI.store(false);
         mGrid = makeGrid(mUiElements.mSelectedRegister);
         screen.PostEvent(Event::Custom);
@@ -117,7 +117,7 @@ void MainView::updateView()
 
 void MainView::setSelectedModel(std::function<void(int)> func)
 {
-  mUpdateSelectedModel = std::move(func);
+  mControllerCallbacks.mUpdateSelectedModel = std::move(func);
 }
 
 }  // namespace views
