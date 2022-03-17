@@ -6,8 +6,8 @@
 #include "RegisterType.h"
 #include "MainView.h"
 #include "ModbusModel.h"
-#include "ModbusSetter.h"
-#include "ViewCallbacks.h"
+#include "ModbusWriter.h"
+#include "ControllerCallbacks.h"
 
 namespace controllers {
 

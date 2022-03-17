@@ -12,7 +12,7 @@
 
 #include "Configuration.h"
 #include "ModbusModel.h"
-#include "ViewCallbacks.h"
+#include "ControllerCallbacks.h"
 
 #include "ftxui/component/captured_mouse.hpp"
 #include "ftxui/component/component.hpp"

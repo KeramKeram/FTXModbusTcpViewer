@@ -1,11 +1,10 @@
 #include "ViewController.h"
 
-#include "ModbusSetter.h"
 
 namespace controllers {
 ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView,
                                const std::shared_ptr<modbusCommon::ModbusWriter> &modbusWriter, common::ControllerCallbacks &callbacks)
-  : mModbusModel(mModbusModel), mMainView(mMainView), mSelectedModel(0), mModbusWriter(modbusWriter)
+  : mModbusModel(mModbusModel), mMainView(mMainView), mModbusWriter(modbusWriter), mSelectedModel(0)
 {
   callbacks.mUpdateSelectedModel = [this](int x) { updateSelectedModel(x); };
   callbacks.mSetHoldingRegister = [this](uint16_t adr, uint16_t val) { return setHoldingRegister(adr, val); };

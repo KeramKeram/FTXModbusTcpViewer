@@ -6,8 +6,8 @@
 #include "ModbusDaemon.h"
 #include "ViewController.h"
 #include "loadJsonConfiguration.h"
-#include "ModbusSetter.h"
-#include "ViewCallbacks.h"
+#include "ModbusWriter.h"
+#include "ControllerCallbacks.h"
 
 int main()
 {
