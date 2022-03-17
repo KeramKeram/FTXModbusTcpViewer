@@ -1,6 +1,6 @@
 #include "ModbusSetter.h"
 
-#include "../ModbusCommon/modbus.h"
+#include "modbus.h"
 
 namespace modbusThread {
 bool setHoldingModbus(const configuration::Configuration &modbusConf, uint16_t address, uint16_t value)

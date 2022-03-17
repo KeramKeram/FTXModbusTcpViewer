@@ -2,7 +2,7 @@
 
 #include "Configuration.h"
 #include "FillModel.h"
-#include "../ModbusCommon/modbus.h"
+#include "modbus.h"
 
 namespace modbusThread {
 
