@@ -39,13 +39,13 @@ public:
 private:
   struct UiInternalElements
   {
-    std::atomic_bool mRefreshUI{};
+    std::atomic_bool mRefreshUI{ false };
     int mSelectedRegister{ 0 };
     int mPreviousSelectedRegister{ 0 };
     float mFocusX{ 0 };
     float mFocusY{ 0 };
-    std::string mRegisterAddress;
-    std::string mRegisterValue;
+    std::string mRegisterAddress{ "0" };
+    std::string mRegisterValue{ "0" };
 
     Component mSliderX;
     Component mSliderY;
@@ -59,6 +59,8 @@ private:
   Element makeGrid(int registersType);
 
   Component createRenderer();
+
+  void setRegister(int regAdr, int regVal);
 
   std::shared_ptr<model::ModbusModel> mModbusModel;
   common::ControllerCallbacks &mControllerCallbacks;

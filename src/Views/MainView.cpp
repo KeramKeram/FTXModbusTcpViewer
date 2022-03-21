@@ -12,10 +12,7 @@ using namespace ftxui;
 
 MainView::MainView(const std::shared_ptr<model::ModbusModel> &mModbusModel, common::ControllerCallbacks &controllerCallbacks,
                    configuration::ViewConfiguration &viewConfiguration)
-  : mModbusModel(mModbusModel)
-  , mControllerCallbacks(controllerCallbacks)
-  , mViewConfiguration(viewConfiguration)
-  , mStopInternalThreads(false)
+  : mModbusModel(mModbusModel), mControllerCallbacks(controllerCallbacks), mViewConfiguration(viewConfiguration), mStopInternalThreads(false)
 {
 }
 
@@ -38,14 +35,21 @@ void MainView::show()
   mUiElements.mRadioBoxReg = Radiobox(&radiobox_list, &mUiElements.mSelectedRegister);
 
   mControllerCallbacks.mUpdateSelectedModel(mUiElements.mSelectedRegister);
-  mGrid = makeGrid(mUiElements.mSelectedRegister);
+  mGrid       = makeGrid(mUiElements.mSelectedRegister);
+  auto screen = ScreenInteractive::Fullscreen();
+  ftxui::StringRef registerAddress(&mUiElements.mRegisterAddress);
+  ftxui::StringRef registerValue(&mUiElements.mRegisterValue);
+  mUiElements.mQuitButton        = Button("Quit", screen.ExitLoopClosure());
+  mUiElements.mInputRegAddress   = Input(registerAddress, "0");
+  mUiElements.mInputRegValue     = Input(registerValue, "0");
+  mUiElements.mSetRegisterButton = Button("Set Reg.", [this, &registerAddress, &registerValue] {
+    if (registerAddress->empty() || registerValue->empty()) { return; }
+    int regAdr(std::stoi(*registerAddress));
+    int regVal(std::stoi(*registerValue));
+    setRegister(regAdr, regVal);
+  });
 
-  auto screen                                           = ScreenInteractive::Fullscreen();
-  mUiElements.mQuitButton                               = Button("Quit", screen.ExitLoopClosure());
-  mUiElements.mInputRegAddress                          = Input(&mUiElements.mRegisterAddress, "0");
-  mUiElements.mInputRegValue                            = Input(&mUiElements.mRegisterValue, "0");
-  mUiElements.mSetRegisterButton                               = Button("Set Reg.", [this] { });
-  Component renderer                                    = createRenderer();
+  Component renderer = createRenderer();
 
   mStopInternalThreads.store(false);
   std::thread refresh_ui([&, this] {
@@ -87,6 +91,7 @@ Component MainView::createRenderer()
   auto renderer = Renderer(Container::Vertical({ mUiElements.mRadioBoxReg,
                                                  mUiElements.mSliderX,
                                                  mUiElements.mSliderY,
+                                                 mUiElements.mSetRegisterButton,
                                                  mUiElements.mQuitButton,
                                                  mUiElements.mInputRegAddress,
                                                  mUiElements.mInputRegValue }),
@@ -99,8 +104,9 @@ Component MainView::createRenderer()
                                            mUiElements.mRadioBoxReg->Render(),
                                            mUiElements.mSliderX->Render(),
                                            mUiElements.mSliderY->Render(),
-                                           hbox(text(" Reg. Address : "), mUiElements.mInputRegAddress->Render()),
-                                           hbox(text(" Reg. Value : "), mUiElements.mInputRegValue->Render()),
+                                           mUiElements.mInputRegAddress->Render(),
+                                           mUiElements.mInputRegValue->Render(),
+                                           separator(),
                                            mUiElements.mSetRegisterButton->Render(),
                                            mUiElements.mQuitButton->Render(),
                                            separator(),
@@ -113,6 +119,32 @@ Component MainView::createRenderer()
 void MainView::updateView()
 {
   mUiElements.mRefreshUI.store(true);
+}
+
+void MainView::setRegister(int regAdr, int regVal)
+{
+  uint16_t regAdr16(0);
+  if (regAdr <= static_cast<int>(UINT16_MAX) && regAdr >= 0) {
+    regAdr16 = static_cast<uint16_t>(regAdr);
+  } else {
+    return;
+  }
+
+  if (mUiElements.mSelectedRegister == 0) {
+    if (regVal == 0) {
+      mControllerCallbacks.mSetCoilRegister(regAdr16, false);
+    } else {
+      mControllerCallbacks.mSetCoilRegister(regAdr16, true);
+    }
+  } else if (mUiElements.mSelectedRegister == 3) {
+    uint16_t regVal16(0);
+    if (regVal <= static_cast<int>(UINT16_MAX) && regVal >= 0) {
+      regVal16 = static_cast<uint16_t>(regVal);
+    } else {
+      return;
+    }
+    mControllerCallbacks.mSetHoldingRegister(regAdr16, regVal16);
+  }
 }
 
 }  // namespace views
