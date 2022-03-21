@@ -24,7 +24,7 @@ void views::TableCreator::populateTable(const std::vector<std::string> &vals, st
 {
   size_t counter = 0;
   std::string value;
-  for (int x = 0; x < mViewConfiguration.mRowsNumber; ++x) {
+  for (unsigned int x = 0; x < mViewConfiguration.mRowsNumber; ++x) {
     std::vector<Element> row;
     for (int j = 0; j < partsInRow; ++j) {
       if (counter >= vals.size()) { break; }

@@ -6,9 +6,9 @@
 #include "Configuration.h"
 #include "RegisterType.h"
 #include "ViewController.h"
-#include "modbus.h"
+#include "../ModbusCommon/modbus.h"
 
-namespace Modbus {
+namespace modbusThread {
 class FillModel
 {
   using dataPair = std::pair<unsigned int, std::string>;

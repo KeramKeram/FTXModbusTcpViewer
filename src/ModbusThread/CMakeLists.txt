@@ -1,5 +1,5 @@
 
-set(LIB_NAME Modbus)
+set(LIB_NAME ModbusThread)
 
 aux_source_directory(. SRC_FILES)
 
@@ -18,6 +18,7 @@ target_link_libraries(${LIB_NAME} PRIVATE Views)
 target_link_libraries(${LIB_NAME} PRIVATE Controllers)
 target_link_libraries(${LIB_NAME} PRIVATE Configuration)
 target_link_libraries(${LIB_NAME} PRIVATE Common)
+target_link_libraries(${LIB_NAME} PRIVATE ModbusCommon)
 
 target_compile_options(
         ${LIB_NAME} PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>:-Wall -O3 -Wno-unused-parameter>

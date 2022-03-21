@@ -1,10 +1,14 @@
 #include "ViewController.h"
 
+
 namespace controllers {
-ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView)
-  : mModbusModel(mModbusModel), mMainView(mMainView), mSelectedModel(0)
+ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbusModel, const std::shared_ptr<views::IView> &mMainView,
+                               const std::shared_ptr<modbusCommon::ModbusWriter> &modbusWriter, common::ControllerCallbacks &callbacks)
+  : mModbusModel(mModbusModel), mMainView(mMainView), mModbusWriter(modbusWriter), mSelectedModel(0)
 {
-  mMainView->setSelectedModel([this](int x) {updateSelectedModel(x);});
+  callbacks.mUpdateSelectedModel = [this](int x) { updateSelectedModel(x); };
+  callbacks.mSetHoldingRegister = [this](uint16_t adr, uint16_t val) { return setHoldingRegister(adr, val); };
+  callbacks.mSetCoilRegister = [this](uint16_t adr, bool val) { return setCoilRegister(adr, val); };
 }
 
 void ViewController::showView()
@@ -35,5 +39,15 @@ unsigned int ViewController::getCurrentModelView()
 void ViewController::updateSelectedModel(int selected)
 {
   mSelectedModel.store(selected);
+}
+
+void ViewController::setHoldingRegister(uint16_t address, uint16_t value)
+{
+  mModbusWriter->setHoldingModbus(address, value);
+}
+
+void ViewController::setCoilRegister(uint16_t address, bool value)
+{
+  mModbusWriter->setCoilModbus(address, value);
 }
 }  // namespace controllers
