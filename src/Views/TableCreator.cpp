@@ -1,6 +1,7 @@
 #include "TableCreator.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace views {
@@ -28,7 +29,7 @@ void views::TableCreator::populateTable(const std::vector<std::string> &vals, st
   }
 }
 
-std::vector<Element> views::TableCreator::createRow(const std::vector<std::string> &vals, int partsInRow, size_t &counter) const
+std::vector<Element> views::TableCreator::createRow(const std::vector<std::string> &vals, int partsInRow, size_t &counter)
 {
   std::string value;
   std::vector<Element> row;
@@ -57,7 +58,7 @@ std::vector<Element> views::TableCreator::createFirstRow(int partsInRow)
   return firstRow;
 }
 
-std::string views::TableCreator::columnDescription(int i) const
+std::string views::TableCreator::columnDescription(int i)
 {
   std::string number;
   if (i != 0) {
@@ -71,7 +72,7 @@ std::string views::TableCreator::columnDescription(int i) const
 
 TableCreator::BoxParameter TableCreator::createBoxParameters(std::string value, int hue, int hsv)
 {
-  TableCreator::BoxParameter param(value, hue, 255, hsv);
+  TableCreator::BoxParameter param(std::move(value), hue, 255, hsv);
   return param;
 }
 

@@ -35,9 +35,9 @@ private:
   static ftxui::Element makeBox(const BoxParameter &param);
   std::vector<Element> createFirstRow(int partsInRow);
   void populateTable(const std::vector<std::string> &vals, std::vector<Elements> &rows, int partsInRow);
-  std::vector<Element> createRow(const std::vector<std::string> &vals, int partsInRow, size_t &counter) const;
+  static std::vector<Element> createRow(const std::vector<std::string> &vals, int partsInRow, size_t &counter) ;
 
   configuration::ViewConfiguration& mViewConfiguration;
-  std::string columnDescription(int i) const;};
+  [[nodiscard]] static std::string columnDescription(int i) ;};
 
 }  // namespace views
