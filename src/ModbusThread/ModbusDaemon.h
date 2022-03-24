@@ -13,6 +13,7 @@
 
 #include "Configuration.h"
 #include "ViewController.h"
+#include "FillModel.h"
 
 namespace modbusThread {
 class ModbusDaemon
@@ -28,6 +29,7 @@ public:
 
 private:
   void runFunction();
+  void fillModel(int selectedModelInView, modbusThread::FillModel &modelFiller) const;
 
   std::shared_ptr<controllers::ViewController> mViewController;
   configuration::Configuration mConfiguration;

@@ -3,9 +3,10 @@
 #include "ConfigurationFileStructure.h"
 
 namespace configuration {
-    struct Configuration {
-      RegisterConfiguration mRegisterConfiguration;
-      NetworkConfiguration mNetworkConfiguration;
-      ViewConfiguration mViewConfiguration;
-    };
-}
+struct Configuration
+{
+  RegisterConfiguration mRegisterConfiguration;
+  NetworkConfiguration mNetworkConfiguration;
+  ViewConfiguration mViewConfiguration;
+};
+}  // namespace configuration

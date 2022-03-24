@@ -1,6 +1,7 @@
 #include "TableCreator.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace views {
@@ -23,36 +24,55 @@ std::vector<Elements> views::TableCreator::createTable(std::vector<std::string> 
 void views::TableCreator::populateTable(const std::vector<std::string> &vals, std::vector<Elements> &rows, int partsInRow)
 {
   size_t counter = 0;
-  std::string value;
   for (unsigned int x = 0; x < mViewConfiguration.mRowsNumber; ++x) {
-    std::vector<Element> row;
-    for (int j = 0; j < partsInRow; ++j) {
-      if (counter >= vals.size()) { break; }
-      if (j == 0) {
-        value = "-";
-        row.push_back(makeBox(createBoxParameters(value, 185, 100)));
-      } else {
-        value = vals[counter];
-        counter++;
-        row.push_back(makeBox(createBoxParameters(value, 40, 200)));
-      }
-    }
-    rows.push_back(row);
+    rows.push_back(createRow(vals, partsInRow, counter));
   }
 }
+
+std::vector<Element> views::TableCreator::createRow(const std::vector<std::string> &vals, int partsInRow, size_t &counter)
+{
+  std::string value;
+  std::vector<Element> row;
+  for (int j = 0; j < partsInRow; ++j) {
+    if (counter >= vals.size()) { break; }
+    if (j == 0) {
+      value = "-";
+      row.push_back(makeBox(createBoxParameters(value, 185, 100)));
+    } else {
+      value = vals[counter];
+      counter++;
+      row.push_back(makeBox(createBoxParameters(value, 40, 200)));
+    }
+  }
+  return row;
+}
+
 std::vector<Element> views::TableCreator::createFirstRow(int partsInRow)
 {
   std::vector<Element> firstRow;
+  std::string numbers;
   for (int i = 0; i < partsInRow; i++) {
-    std::string numbers = std::to_string(i);
+    numbers = columnDescription(i);
     firstRow.push_back(makeBox(createBoxParameters(numbers, 185, 100)));
   }
   return firstRow;
 }
 
+std::string views::TableCreator::columnDescription(int i)
+{
+  std::string number;
+  if (i != 0) {
+    number = std::to_string(i-1);
+
+  } else {
+    number = "-";
+  }
+    return number;
+}
+
 TableCreator::BoxParameter TableCreator::createBoxParameters(std::string value, int hue, int hsv)
 {
-  TableCreator::BoxParameter param(value, hue, 255, hsv);
+  TableCreator::BoxParameter param(std::move(value), hue, 255, hsv);
   return param;
 }
 
