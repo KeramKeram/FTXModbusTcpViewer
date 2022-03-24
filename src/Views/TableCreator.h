@@ -9,7 +9,6 @@
 
 namespace views {
 using namespace ftxui;
-constexpr int VIEW_ROWS       = 2;
 constexpr int VIEW_BOX_WIDTH  = 8;
 constexpr int VIEW_BOX_HEIGHT = 3;
 
