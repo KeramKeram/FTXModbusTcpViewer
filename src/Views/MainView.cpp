@@ -121,7 +121,7 @@ void MainView::updateView()
   mUiElements.mRefreshUI.store(true);
 }
 
-void MainView::setRegister(int regAdr, int regVal)
+void MainView::setRegister(int regAdr, int regVal) const
 {
   uint16_t regAdr16(0);
   if (regAdr <= static_cast<int>(UINT16_MAX) && regAdr >= 0) {
@@ -130,6 +130,11 @@ void MainView::setRegister(int regAdr, int regVal)
     return;
   }
 
+  updateRegister(regVal, regAdr16);
+}
+
+void MainView::updateRegister(int regVal, uint16_t regAdr16) const
+{
   if (mUiElements.mSelectedRegister == 0) {
     if (regVal == 0) {
       mControllerCallbacks.mSetCoilRegister(regAdr16, false);
@@ -146,5 +151,4 @@ void MainView::setRegister(int regAdr, int regVal)
     mControllerCallbacks.mSetHoldingRegister(regAdr16, regVal16);
   }
 }
-
 }  // namespace views

@@ -60,7 +60,9 @@ private:
 
   Component createRenderer();
 
-  void setRegister(int regAdr, int regVal);
+  void setRegister(int regAdr, int regVal) const;
+
+  void updateRegister(int regVal, uint16_t regAdr16) const;
 
   std::shared_ptr<model::ModbusModel> mModbusModel;
   common::ControllerCallbacks &mControllerCallbacks;
