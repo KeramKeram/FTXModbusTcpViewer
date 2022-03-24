@@ -40,26 +40,29 @@ void ModbusDaemon::runFunction()
   FillModel modelFiller(mViewController, modbusConnection);
   while (mRun.load()) {
     selectedModelInView = mViewController->getCurrentModelView();
-
-    switch (selectedModelInView) {
-    case 0: modelFiller.fillCoilsModel(mConfiguration.mRegisterConfiguration.mCoilsStart, mConfiguration.mRegisterConfiguration.mCoilsEnd); break;
-    case 1:
-      modelFiller.fillInputStatusModel(mConfiguration.mRegisterConfiguration.mInputStatusStart,
-                                       mConfiguration.mRegisterConfiguration.mInputStatusEnd);
-      break;
-    case 2:
-      modelFiller.FillInputRegisterModel(mConfiguration.mRegisterConfiguration.mInputRegistersStart,
-                                         mConfiguration.mRegisterConfiguration.mInputRegistersEnd);
-      break;
-    case 3:
-      modelFiller.FillHoldingRegisterModel(mConfiguration.mRegisterConfiguration.mHoldingRegistersStart,
-                                           mConfiguration.mRegisterConfiguration.mHoldingRegistersEnd);
-      break;
-    }
+    fillModel(selectedModelInView, modelFiller);
     /* It's better to update view from here than update it on every change in model */
     mViewController->updateView();
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(0.25s);
+  }
+}
+
+void ModbusDaemon::fillModel(int selectedModelInView, FillModel &modelFiller) const
+{
+  switch (selectedModelInView) {
+  case 0: modelFiller.fillCoilsModel(mConfiguration.mRegisterConfiguration.mCoilsStart, mConfiguration.mRegisterConfiguration.mCoilsEnd); break;
+  case 1:
+    modelFiller.fillInputStatusModel(mConfiguration.mRegisterConfiguration.mInputStatusStart, mConfiguration.mRegisterConfiguration.mInputStatusEnd);
+    break;
+  case 2:
+    modelFiller.FillInputRegisterModel(mConfiguration.mRegisterConfiguration.mInputRegistersStart,
+                                       mConfiguration.mRegisterConfiguration.mInputRegistersEnd);
+    break;
+  case 3:
+    modelFiller.FillHoldingRegisterModel(mConfiguration.mRegisterConfiguration.mHoldingRegistersStart,
+                                         mConfiguration.mRegisterConfiguration.mHoldingRegistersEnd);
+    break;
   }
 }
 
