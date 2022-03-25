@@ -160,4 +160,10 @@ void MainView::updateRegister(int regVal, uint16_t regAdr16)
     mUiElements.mRegisterValue = errorString;
   }
 }
+
+void MainView::showConnectionError(std::string error)
+{
+  mUiElements.mRegisterValue = error;
+  mUiElements.mRegisterAddress = error;
+}
 }  // namespace views

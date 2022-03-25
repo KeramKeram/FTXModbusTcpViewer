@@ -36,4 +36,4 @@ private:
   std::thread mThread;
   std::atomic_bool mRun;
 };
-}  // namespace Modbus
+}  // namespace modbusThread

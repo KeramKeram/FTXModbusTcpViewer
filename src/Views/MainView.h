@@ -33,6 +33,8 @@ public:
 
   void show() override;
 
+  void showConnectionError(std::string error) override;
+
 public:
   void updateView() override;
 
