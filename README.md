@@ -1,9 +1,9 @@
 # FTXModbusTcpViewer
 Very easy viewer for modbus. <b> PROGRAM WAS TESTED USING PYMODUS. NO WARRANTY IS WORKING WITH OTHER SOFTWARE</b>.
-Program is still in active development, but currently is able to read and write registers from modbus server and show them on screen.
+Program is able to read and write registers from modbus server and show them on screen.
 
 # Build
-Build tested only on Linux.
+Program is working only on Linux.
 run build script:
 
 ```
@@ -15,9 +15,9 @@ After build go to bin folder. If build was successful you can run software in th
 ```
 ./FTXModbusTcpViewer
 ```
-
+![alt text](example.png)
 # Configuration
-In file configuration.json you can find configuration of the program(for current version is limited).
+In file configuration.json you can find configuration of the program.
 This file is copied to bin folder by build script:
 In configuration(who is json file) we can find three main parts:
 - register-interval
@@ -30,4 +30,13 @@ In configuration(who is json file) we can find three main parts:
   We can manipulate view output. Currently, we can only change number of displayed rows.
 
 All changes in configuration required restart of program.
+
+# FAQ
+1) Q: On start of the program I see X in box values<br />
+   A: That means that there is no connection with modbus server, check configuration file and server.
+2) Q: In some point modbus server was shut down and application is frozen.
+   A: Third party library for modbus connection is blocking in that case. You need to shut-down program.
+3) Q: How to set modbus Register?
+   A: Above button seg reg. there are two input fields. You need to click on them and type address in first field and value in second. <br />
+      Be aware that in these fields' error messages are showing too.
   
