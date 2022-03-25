@@ -44,8 +44,8 @@ private:
     int mPreviousSelectedRegister{ 0 };
     float mFocusX{ 0 };
     float mFocusY{ 0 };
-    std::string mRegisterAddress{ "0" };
-    std::string mRegisterValue{ "0" };
+    std::string mRegisterAddress{ "" };
+    std::string mRegisterValue{ "" };
 
     Component mSliderX;
     Component mSliderY;
@@ -60,9 +60,9 @@ private:
 
   Component createRenderer();
 
-  void setRegister(int regAdr, int regVal) const;
+  void setRegister(int regAdr, int regVal);
 
-  void updateRegister(int regVal, uint16_t regAdr16) const;
+  void updateRegister(int regVal, uint16_t regAdr16);
 
   std::shared_ptr<model::ModbusModel> mModbusModel;
   common::ControllerCallbacks &mControllerCallbacks;

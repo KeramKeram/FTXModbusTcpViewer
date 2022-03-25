@@ -27,9 +27,9 @@ public:
 
   void updateView();
 
-  void setHoldingRegister(uint16_t address, uint16_t value);
+  bool setHoldingRegister(uint16_t address, uint16_t value);
 
-  void setCoilRegister(uint16_t address, bool value);
+  bool setCoilRegister(uint16_t address, bool value);
 
 private:
   void updateSelectedModel(int selected);

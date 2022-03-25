@@ -41,13 +41,13 @@ void ViewController::updateSelectedModel(int selected)
   mSelectedModel.store(selected);
 }
 
-void ViewController::setHoldingRegister(uint16_t address, uint16_t value)
+bool ViewController::setHoldingRegister(uint16_t address, uint16_t value)
 {
-  mModbusWriter->setHoldingModbus(address, value);
+  return mModbusWriter->setHoldingRegisterModbus(address, value);
 }
 
-void ViewController::setCoilRegister(uint16_t address, bool value)
+bool ViewController::setCoilRegister(uint16_t address, bool value)
 {
-  mModbusWriter->setCoilModbus(address, value);
+  return mModbusWriter->setCoilRegisterModbus(address, value);
 }
 }  // namespace controllers

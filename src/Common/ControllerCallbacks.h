@@ -4,7 +4,7 @@
 namespace common {
   struct ControllerCallbacks {
     std::function<void(int)> mUpdateSelectedModel;
-    std::function<void(uint16_t, uint16_t)> mSetHoldingRegister;
-    std::function<void(uint16_t, bool)> mSetCoilRegister;
+    std::function<bool(uint16_t, uint16_t)> mSetHoldingRegister;
+    std::function<bool(uint16_t, bool)> mSetCoilRegister;
   };
 };
