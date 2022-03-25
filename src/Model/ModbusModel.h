@@ -47,7 +47,6 @@ private:
   std::unique_ptr<safeMap> mInputStatus;
   std::unique_ptr<safeMap> mInputRegisters;
   std::unique_ptr<safeMap> mHoldingRegisters;
-
   std::function<void()> mModelsUpdatedCallback;
 };
 }  // namespace model
