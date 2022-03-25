@@ -35,7 +35,6 @@ void ModbusDaemon::runFunction()
   auto status = modbusConnection.modbus_connect();
   if (!status) {
     mViewController->showConnectionError("Error: Can't connect to modbus server!");
-    return;
   }
   int selectedModelInView = 0;
   FillModel modelFiller(mViewController, modbusConnection);
