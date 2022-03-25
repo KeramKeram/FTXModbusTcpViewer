@@ -34,7 +34,7 @@ void ModbusDaemon::runFunction()
   modbusConnection.modbus_set_slave_id(mConfiguration.mNetworkConfiguration.mSlaveId);
   auto status = modbusConnection.modbus_connect();
   if (!status) {
-    return;
+    mViewController->showConnectionError("Error: Can't connect to modbus server!");
   }
   int selectedModelInView = 0;
   FillModel modelFiller(mViewController, modbusConnection);
@@ -66,4 +66,4 @@ void ModbusDaemon::fillModel(int selectedModelInView, FillModel &modelFiller) co
   }
 }
 
-}  // namespace Modbus
+}  // namespace modbusThread

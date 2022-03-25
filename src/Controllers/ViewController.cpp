@@ -7,8 +7,8 @@ ViewController::ViewController(const std::shared_ptr<model::ModbusModel> &mModbu
   : mModbusModel(mModbusModel), mMainView(mMainView), mModbusWriter(modbusWriter), mSelectedModel(0)
 {
   callbacks.mUpdateSelectedModel = [this](int x) { updateSelectedModel(x); };
-  callbacks.mSetHoldingRegister = [this](uint16_t adr, uint16_t val) { return setHoldingRegister(adr, val); };
-  callbacks.mSetCoilRegister = [this](uint16_t adr, bool val) { return setCoilRegister(adr, val); };
+  callbacks.mSetHoldingRegister  = [this](uint16_t adr, uint16_t val) { return setHoldingRegister(adr, val); };
+  callbacks.mSetCoilRegister     = [this](uint16_t adr, bool val) { return setCoilRegister(adr, val); };
 }
 
 void ViewController::showView()
@@ -41,13 +41,18 @@ void ViewController::updateSelectedModel(int selected)
   mSelectedModel.store(selected);
 }
 
-void ViewController::setHoldingRegister(uint16_t address, uint16_t value)
+bool ViewController::setHoldingRegister(uint16_t address, uint16_t value)
 {
-  mModbusWriter->setHoldingModbus(address, value);
+  return mModbusWriter->setHoldingRegisterModbus(address, value);
 }
 
-void ViewController::setCoilRegister(uint16_t address, bool value)
+bool ViewController::setCoilRegister(uint16_t address, bool value)
 {
-  mModbusWriter->setCoilModbus(address, value);
+  return mModbusWriter->setCoilRegisterModbus(address, value);
+}
+
+void ViewController::showConnectionError(std::string error)
+{
+  mMainView->showConnectionError(error);
 }
 }  // namespace controllers

@@ -40,8 +40,8 @@ void MainView::show()
   ftxui::StringRef registerAddress(&mUiElements.mRegisterAddress);
   ftxui::StringRef registerValue(&mUiElements.mRegisterValue);
   mUiElements.mQuitButton        = Button("Quit", screen.ExitLoopClosure());
-  mUiElements.mInputRegAddress   = Input(registerAddress, "0");
-  mUiElements.mInputRegValue     = Input(registerValue, "0");
+  mUiElements.mInputRegAddress   = Input(registerAddress, "Type Modbus Address");
+  mUiElements.mInputRegValue     = Input(registerValue, "Type Value");
   mUiElements.mSetRegisterButton = Button("Set Reg.", [this, &registerAddress, &registerValue] {
     if (registerAddress->empty() || registerValue->empty()) { return; }
     int regAdr(std::stoi(*registerAddress));
@@ -121,7 +121,7 @@ void MainView::updateView()
   mUiElements.mRefreshUI.store(true);
 }
 
-void MainView::setRegister(int regAdr, int regVal) const
+void MainView::setRegister(int regAdr, int regVal)
 {
   uint16_t regAdr16(0);
   if (regAdr <= static_cast<int>(UINT16_MAX) && regAdr >= 0) {
@@ -133,13 +133,15 @@ void MainView::setRegister(int regAdr, int regVal) const
   updateRegister(regVal, regAdr16);
 }
 
-void MainView::updateRegister(int regVal, uint16_t regAdr16) const
+void MainView::updateRegister(int regVal, uint16_t regAdr16)
 {
+  bool result = true;
+  std::string errorString = "Error during setting value.";
   if (mUiElements.mSelectedRegister == 0) {
     if (regVal == 0) {
-      mControllerCallbacks.mSetCoilRegister(regAdr16, false);
+      result = mControllerCallbacks.mSetCoilRegister(regAdr16, false);
     } else {
-      mControllerCallbacks.mSetCoilRegister(regAdr16, true);
+      result = mControllerCallbacks.mSetCoilRegister(regAdr16, true);
     }
   } else if (mUiElements.mSelectedRegister == 3) {
     uint16_t regVal16(0);
@@ -148,7 +150,20 @@ void MainView::updateRegister(int regVal, uint16_t regAdr16) const
     } else {
       return;
     }
-    mControllerCallbacks.mSetHoldingRegister(regAdr16, regVal16);
+    result = mControllerCallbacks.mSetHoldingRegister(regAdr16, regVal16);
+  } else {
+    errorString = "Error writing operation for input status registers and input registers not supported.";
+    result = false;
   }
+
+  if (!result) {
+    mUiElements.mRegisterValue = errorString;
+  }
+}
+
+void MainView::showConnectionError(std::string error)
+{
+  mUiElements.mRegisterValue = error;
+  mUiElements.mRegisterAddress = error;
 }
 }  // namespace views

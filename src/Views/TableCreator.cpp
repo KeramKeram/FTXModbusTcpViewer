@@ -21,6 +21,7 @@ std::vector<Elements> views::TableCreator::createTable(std::vector<std::string> 
   populateTable(vals, rows, partsInRow);
   return rows;
 }
+
 void views::TableCreator::populateTable(const std::vector<std::string> &vals, std::vector<Elements> &rows, int partsInRow)
 {
   size_t counter = 0;

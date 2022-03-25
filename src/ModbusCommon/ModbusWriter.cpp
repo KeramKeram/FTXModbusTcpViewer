@@ -7,7 +7,7 @@ ModbusWriter::ModbusWriter(const configuration::Configuration &modbusConfigurati
 {
 }
 
-bool ModbusWriter::setHoldingModbus(uint16_t address, uint16_t value)
+bool ModbusWriter::setHoldingRegisterModbus(uint16_t address, uint16_t value)
 {
   auto modbusConnection = modbus(mModbusConfiguration.mNetworkConfiguration.mModbusTcpAddress, mModbusConfiguration.mNetworkConfiguration.mTCPPort);
   modbusConnection.modbus_set_slave_id(mModbusConfiguration.mNetworkConfiguration.mSlaveId);
@@ -16,7 +16,7 @@ bool ModbusWriter::setHoldingModbus(uint16_t address, uint16_t value)
   return true;
 }
 
-bool ModbusWriter::setCoilModbus(uint16_t address, bool value)
+bool ModbusWriter::setCoilRegisterModbus(uint16_t address, bool value)
 {
   auto modbusConnection = modbus(mModbusConfiguration.mNetworkConfiguration.mModbusTcpAddress, mModbusConfiguration.mNetworkConfiguration.mTCPPort);
   modbusConnection.modbus_set_slave_id(mModbusConfiguration.mNetworkConfiguration.mSlaveId);

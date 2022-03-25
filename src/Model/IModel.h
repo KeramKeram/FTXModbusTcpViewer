@@ -6,7 +6,8 @@ namespace model {
 class IModel
 {
 public:
-  IModel()          = default;
+  IModel() = default;
+
   virtual ~IModel() = default;
 
   virtual void setUpdateCallback(std::function<void()> modelsUpdatedCallback) = 0;

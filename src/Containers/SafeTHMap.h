@@ -35,10 +35,11 @@ public:
     mContainer.clear();
   }
 
-  std::vector<V> getAllValues() {
+  std::vector<V> getAllValues()
+  {
     std::lock_guard<std::mutex> lk(mMutex);
     std::vector<V> vals;
-    transform(mContainer.begin(), mContainer.end(), back_inserter(vals), [](const auto& val){return val.second;} );
+    transform(mContainer.begin(), mContainer.end(), back_inserter(vals), [](const auto &val) { return val.second; });
     return vals;
   }
 

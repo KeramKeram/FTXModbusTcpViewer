@@ -27,9 +27,11 @@ public:
 
   void updateView();
 
-  void setHoldingRegister(uint16_t address, uint16_t value);
+  bool setHoldingRegister(uint16_t address, uint16_t value);
 
-  void setCoilRegister(uint16_t address, bool value);
+  bool setCoilRegister(uint16_t address, bool value);
+
+  void showConnectionError(std::string error);
 
 private:
   void updateSelectedModel(int selected);
@@ -37,7 +39,6 @@ private:
   std::shared_ptr<model::ModbusModel> mModbusModel;
   std::shared_ptr<views::IView> mMainView;
   std::shared_ptr<modbusCommon::ModbusWriter> mModbusWriter;
-
   std::atomic<int> mSelectedModel;
 };
 }  // namespace controllers
