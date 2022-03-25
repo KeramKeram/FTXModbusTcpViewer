@@ -136,6 +136,7 @@ void MainView::setRegister(int regAdr, int regVal)
 void MainView::updateRegister(int regVal, uint16_t regAdr16)
 {
   bool result = true;
+  std::string errorString = "Error during setting value.";
   if (mUiElements.mSelectedRegister == 0) {
     if (regVal == 0) {
       result = mControllerCallbacks.mSetCoilRegister(regAdr16, false);
@@ -150,10 +151,13 @@ void MainView::updateRegister(int regVal, uint16_t regAdr16)
       return;
     }
     result = mControllerCallbacks.mSetHoldingRegister(regAdr16, regVal16);
+  } else {
+    errorString = "Error writing operation for input status registers and input registers not supported.";
+    result = false;
   }
 
   if (!result) {
-    mUiElements.mRegisterValue = std::string("Error during setting value.");
+    mUiElements.mRegisterValue = errorString;
   }
 }
 }  // namespace views
